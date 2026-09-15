@@ -1,0 +1,21 @@
+import { Locator, Page } from '@playwright/test'
+import { BASE_URL } from 'src/constants/base.constant';
+import { getUrlPattern } from 'src/utils/getUrlPattern';
+
+export class DefaultPage {
+
+    private readonly page: Page;
+    readonly errorHeading: Locator;
+    readonly errorMessage: Locator;
+    private readonly PAGE_NAME = "index";
+    readonly EXPECTED_PAGE_URL = new RegExp(getUrlPattern(this.PAGE_NAME));
+    constructor(page: Page){
+        this.page = page;
+        this.errorHeading = this.page.getByRole("heading", { name: "Error!" });
+        this.errorMessage = this.page.locator("#rightPanel > p"); 
+    }
+
+    navigate = async(): Promise<void> => {
+        await this.page.goto(`${BASE_URL}/${this.PAGE_NAME}.htm`)
+    }
+}
