@@ -1,7 +1,7 @@
 import { Page, test as base, expect } from '@playwright/test'
-import { TEST_USER_CREDENTIALS } from 'src/test-data/login.data';
-import { LogInSideBarComponent } from 'src/pages/components/login-sidebar.component';
-import { LoggedInSideBarComponent } from 'src/pages/components/loggedin-sidebar.component';
+import { TEST_USER_CREDENTIALS } from '@test-data/signin.data';
+import { LogInSideBarComponent } from '@pages/components/signin-sidebar.component';
+import { LoggedInSideBarComponent } from '@pages/components/signedin-sidebar.component';
 import { AccountsOverviewPage } from 'src/pages/accounts-overview.page';
 
 export const authTest = base.extend<{ authPage: Page }>({

@@ -19,6 +19,7 @@ export class FooterComponent {
               expectedLabel: "Home", 
               expectedHref: "index.htm",
               expectedRedirectUrl: new RegExp(getUrlPattern("index")),
+              expectedVisible: true,
               expectedElements: [{
                 locator: this.page.locator("#rightPanel li").getByText("ATM Services")
               }]
@@ -27,6 +28,7 @@ export class FooterComponent {
               expectedLabel: "About Us", 
               expectedHref: "about.htm",
               expectedRedirectUrl: new RegExp(getUrlPattern("about")),
+              expectedVisible: true,
               expectedElements: [{
                 locator: this.page.getByRole("heading", { name: "ParaSoft Demo Website", exact: true })
               }]
@@ -35,6 +37,7 @@ export class FooterComponent {
               expectedLabel: "Services", 
               expectedHref: "services.htm",
               expectedRedirectUrl: new RegExp(getUrlPattern("services")),
+              expectedVisible: true,
               expectedElements: [{
                 locator: this.page.locator("#rightPanel > span").first(),
                 expectedText: "Available Bookstore SOAP services:"
@@ -44,18 +47,21 @@ export class FooterComponent {
               expectedLabel: "Products",
               expectedHref: "http://www.parasoft.com/jsp/products.jsp",
               expectedRedirectUrl: "https://www.parasoft.com/products/",
+              expectedVisible: true,
               isExternal: true,
             },
             { locator: this.page.locator("#footerPanel").getByRole("link", { name: "Locations", exact: true }),
               expectedLabel: "Locations",
               expectedHref: "http://www.parasoft.com/jsp/pr/contacts.jsp",
               expectedRedirectUrl: "https://www.parasoft.com/solutions/",
+              expectedVisible: true,
               isExternal: true
             },
             { locator: this.page.locator("#footerPanel").getByRole("link", { name: "Site Map", exact: true }),
               expectedLabel: "Site Map",
               expectedHref: "sitemap.htm",
               expectedRedirectUrl: new RegExp(getUrlPattern("sitemap")),
+              expectedVisible: true,
               expectedElements: [{
                 locator: this.page.locator("#rightPanel > ul.leftmenu").getByText("Solutions")
               }]
@@ -64,6 +70,7 @@ export class FooterComponent {
               expectedLabel: "Contact Us", 
               expectedHref: "contact.htm",
               expectedRedirectUrl: new RegExp(getUrlPattern("contact")),
+              expectedVisible: true,
               expectedElements: [{
                 locator: this.page.getByRole("heading", { name: "Customer Care", exact: true  })
               }]

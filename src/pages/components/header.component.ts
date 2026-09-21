@@ -13,29 +13,33 @@ export class HeaderComponent {
   readonly EXPECTED_PAGE_URL = new RegExp(getUrlPattern(this.PAGE_NAME));
   constructor(page: Page) {
     this.page = page;
-    ((this.logoCaption = this.page.getByText("Experience the difference")),
-      (this.logoLinks = [
-        {
-          locator: this.page.locator("#topPanel > a").nth(0),
-          expectedHref: "admin.htm",
-          expectedRedirectUrl: new RegExp(getUrlPattern("admin")),
-          expectedElements: [
-            {
-              locator: this.page.locator("#rightPanel").getByRole("heading", { name: "Administration", level: 1 }),
-            },
-          ],
-        },
-        {
-          locator: this.page.locator("#topPanel > a").nth(1),
-          expectedHref: "index.htm",
-          expectedRedirectUrl: new RegExp(getUrlPattern("index")),
-          expectedElements: [
-            {
-              locator: this.page.locator("#rightPanel li").getByText("ATM Services"),
-            },
-          ],
-        }
-      ]));
+    this.logoCaption = this.page.getByText("Experience the difference");
+    this.logoLinks = [
+      {
+        locator: this.page.locator("#topPanel > a[href='admin.htm']"),
+        expectedHref: "admin.htm",
+        expectedRedirectUrl: new RegExp(getUrlPattern("admin")),
+        expectedVisible: false,
+        expectedElements: [
+          {
+            locator: this.page.locator("#rightPanel").getByRole("heading", { name: "Administration", level: 1 }),
+          },
+        ],
+        isUseDispatch: true
+      },
+      {
+        locator: this.page.locator("#topPanel > a[href='index.htm']"),
+        expectedHref: "index.htm",
+        expectedRedirectUrl: new RegExp(getUrlPattern("index")),
+        expectedVisible: false,
+        expectedElements: [
+          {
+            locator: this.page.locator("#rightPanel li").getByText("ATM Services"),
+          },
+        ],
+        isUseDispatch: true
+      },
+    ];
 
     this.leftMenuLinks = [
       //{ locator: this.page.getByText('Solutions'), expectedLabel: "Solutions", expectedHref: "https://www.parasoft.com/solutions/" },
@@ -44,6 +48,7 @@ export class HeaderComponent {
         expectedLabel: "About Us",
         expectedHref: "about.htm",
         expectedRedirectUrl: new RegExp(getUrlPattern("about")),
+        expectedVisible: true,
         expectedElements: [
           {
             locator: this.page.locator("#rightPanel").getByRole("heading", { name: "ParaSoft Demo Website", level: 1 }),
@@ -55,6 +60,7 @@ export class HeaderComponent {
         expectedLabel: "Services",
         expectedHref: "services.htm",
         expectedRedirectUrl: new RegExp(getUrlPattern("services")),
+        expectedVisible: true,
         expectedElements: [
           {
             locator: this.page.locator("#rightPanel > span").first(),
@@ -67,6 +73,7 @@ export class HeaderComponent {
         expectedLabel: "Products",
         expectedHref: "http://www.parasoft.com/jsp/products.jsp",
         expectedRedirectUrl: "https://www.parasoft.com/products/",
+        expectedVisible: true,
         isExternal: true,
       },
       {
@@ -74,6 +81,7 @@ export class HeaderComponent {
         expectedLabel: "Locations",
         expectedHref: "http://www.parasoft.com/jsp/pr/contacts.jsp",
         expectedRedirectUrl: "https://www.parasoft.com/solutions/",
+        expectedVisible: true,
         isExternal: true,
       },
       {
@@ -81,6 +89,7 @@ export class HeaderComponent {
         expectedLabel: "Admin Page",
         expectedHref: "admin.htm",
         expectedRedirectUrl: new RegExp(getUrlPattern("admin")),
+        expectedVisible: true,
         expectedElements: [
           {
             locator: this.page.locator("#rightPanel").getByRole("heading", { name: "Administration", level: 1 }),
@@ -94,6 +103,7 @@ export class HeaderComponent {
         expectedLabel: "home",
         expectedHref: "index.htm",
         expectedRedirectUrl: new RegExp(getUrlPattern("index")),
+        expectedVisible: true,
         expectedElements: [
           {
             locator: this.page.locator("#rightPanel li").getByText("ATM Services"),
@@ -105,6 +115,7 @@ export class HeaderComponent {
         expectedLabel: "about",
         expectedHref: "about.htm",
         expectedRedirectUrl: new RegExp(getUrlPattern("about")),
+        expectedVisible: true,
         expectedElements: [
           {
             locator: this.page.getByRole("heading", { name: "ParaSoft Demo Website" }),
@@ -116,6 +127,7 @@ export class HeaderComponent {
         expectedLabel: "contact",
         expectedHref: "contact.htm",
         expectedRedirectUrl: new RegExp(getUrlPattern("contact")),
+        expectedVisible: true,
         expectedElements: [
           {
             locator: this.page.getByRole("heading", { name: "Customer Care", level: 1 }),

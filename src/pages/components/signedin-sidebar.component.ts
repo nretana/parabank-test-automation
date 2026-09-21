@@ -2,7 +2,7 @@ import { Page, Locator } from '@playwright/test';
 import { BASE_URL } from 'src/constants/base.constant';
 import { getUrlPattern } from 'src/utils/getUrlPattern';
 
-export class LoggedInSideBarComponent {
+export class SignedInSideBarComponent {
     private readonly page: Page;
     readonly welcomeText: Locator; 
     readonly accountServicesHeading: Locator;

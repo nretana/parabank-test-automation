@@ -12,5 +12,7 @@ export interface HyperLink {
     isExternal?: boolean,
     isNewTab?: boolean,
     expectedRedirectUrl: RegExp | string,
-    expectedElements?: ExpectedElement[]
+    expectedVisible: boolean,
+    expectedElements?: ExpectedElement[],
+    isUseDispatch?: boolean
 }

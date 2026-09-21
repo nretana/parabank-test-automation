@@ -3,9 +3,9 @@ import { BASE_URL } from 'src/constants/base.constant';
 import { getUrlPattern } from 'src/utils/getUrlPattern';
 
 
-export class LogInSideBarComponent {
+export class SignInSideBarComponent {
     private page: Page;
-    readonly logInHeading: Locator;
+    readonly loginHeading: Locator;
     readonly usernameLabel: Locator;
     readonly passwordLabel: Locator;
     readonly usernameInput: Locator;
@@ -21,7 +21,7 @@ export class LogInSideBarComponent {
 
     constructor(page: Page){
         this.page = page;
-        this.logInHeading = this.page.getByRole("heading", { name: "Customer Login" });
+        this.loginHeading = this.page.getByRole("heading", { name: "Customer Login" });
         this.usernameLabel = this.page.getByText("Username");
         this.passwordLabel = this.page.getByText("Password");
         this.usernameInput  = this.page.locator("input[name='username']");
@@ -32,7 +32,7 @@ export class LogInSideBarComponent {
         this.errorHeading = this.page.getByRole("heading", { name: "Error!" });
         this.errorMessage = this.page.locator("#rightPanel > p");
         this.loginSideBarElements = [
-            this.logInHeading,
+            this.loginHeading,
             this.usernameLabel,
             this.passwordLabel,
             this.forgotLoginLink,

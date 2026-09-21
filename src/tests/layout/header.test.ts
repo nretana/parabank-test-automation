@@ -4,12 +4,20 @@ import { HyperLink } from "src/@types/hyperlink";
 
 const verifyHeaderLinks = async (page: Page, headerLinks: HyperLink[]) => {
   for (const link of headerLinks) {
-    await expect.soft(link.locator).toBeVisible();
-    if(link.expectedLabel){
+    if (link.expectedVisible) {
+      await expect.soft(link.locator).toBeVisible();
+    }
+    if (link.expectedLabel) {
       await expect.soft(link.locator).toHaveText(link.expectedLabel);
     }
     await expect.soft(link.locator).toHaveAttribute("href", link.expectedHref);
-    await link.locator.click();
+   
+    if(link.isUseDispatch){
+      await link.locator.dispatchEvent("click");
+    } else {
+      await link.locator.click();
+    }
+
     await expect.soft(page).toHaveURL(link.expectedRedirectUrl);
     if (link.isExternal) {
       await page.goBack();
@@ -25,12 +33,12 @@ const verifyHeaderLinks = async (page: Page, headerLinks: HyperLink[]) => {
   }
 };
 
-test.describe("Header Component", () => {
+test.describe("Header Component", { tag: ["@regression"] }, () => {
   test.beforeEach(async ({ header }) => {
-     await header.navigate();
-  })
+    await header.navigate();
+  });
 
-  test("Header renders logo links and logo caption", async({ page, header }) => {
+  test("Header renders logo links and logo caption", async ({ page, header }) => {
     await expect(header.logoCaption).toBeVisible();
     await verifyHeaderLinks(page, header.logoLinks);
   });

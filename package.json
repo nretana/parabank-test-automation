@@ -8,8 +8,11 @@
     "test:ui": "playwright test --ui",
     "test:debug": "playwright test --debug",
     "test:browser": "npx playwright test --headed",
-    "test:@regression": "npx playwright test --config=playwright.regression.config.ts",
-    "test:@smoke": "npx playwright test --config=playwright.smoke.config.ts",
+    "test:@accessibility": "npx playwright test --config=playwright.regression.config.ts --grep @accessibility",
+    "test:@security": "npx playwright test --config=playwright.regression.config.ts --grep @security",
+    "test:@performance": "npx playwright test --config=playwright.regression.config.ts --grep @performance",
+    "test:@regression": "dotenv -e .env.qa -- npx playwright test --config=playwright.regression.config.ts",
+    "test:@smoke": "dotenv -e .env.qa npx playwright test --config=playwright.smoke.config.ts",
     "report:@regression": "playwright show-report src/reports/regression",
     "report:@smoke": "playwright show-report src/reports/smoke"
   },
@@ -22,6 +25,10 @@
     "@types/node": "^26.1.2",
     "cross-env": "^10.1.0",
     "dotenv": "^17.4.2",
+    "dotenv-cli": "^11.0.0",
     "typescript": "^7.0.2"
+  },
+  "dependencies": {
+    "playwright-extra": "^4.3.6"
   }
 }
