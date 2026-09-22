@@ -1,6 +1,8 @@
 import { Locator, Page } from '@playwright/test';
-import { getUrlPattern } from '@utils/getUrlPattern';
+import { getUrlPattern } from '@utils/get-url-pattern';
 import { BASE_URL } from '@constants/base.constant';
+import { Logger } from '@utils/logger';
+import type { UserRegistration } from '@@types/user';
 
 export class SignUpPage {
 
@@ -93,19 +95,20 @@ export class SignUpPage {
         await this.page.goto(`${BASE_URL}/${this.PAGE_NAME}.htm`);
     }
 
-    submitSignUp = async (firstName: string, lastName: string, address: string, city: string, state: string, 
-                         zipCode: string, phoneNumber: string, ssn: string, username: string, password: string, passwordConfirmation : string) => {
-        await this.firstNameInput.fill(firstName);
-        await this.lastNameInput.fill(lastName);
-        await this.addressInput.fill(address);
-        await this.cityInput.fill(city);
-        await this.stateInput.fill(state);
-        await this.zipCodeInput.fill(zipCode);
-        await this.phoneNumberInput.fill(phoneNumber);
-        await this.ssnInput.fill(ssn);
-        await this.usernameInput.fill(username);
-        await this.passwordInput.fill(password);
-        await this.passwordConfirmationInput.fill(passwordConfirmation);
+    submitSignUp = async (userData: UserRegistration) => {
+        Logger.debug(`Filling signup form for username: ${userData.username}`);
+        await this.firstNameInput.fill(userData.firstName);
+        await this.lastNameInput.fill(userData.lastName);
+        await this.addressInput.fill(userData.address);
+        await this.cityInput.fill(userData.city);
+        await this.stateInput.fill(userData.state);
+        await this.zipCodeInput.fill(userData.zipCode);
+        await this.phoneNumberInput.fill(userData.phoneNumber);
+        await this.ssnInput.fill(userData.ssn);
+        await this.usernameInput.fill(userData.username);
+        await this.passwordInput.fill(userData.password);
+        await this.passwordConfirmationInput.fill(userData.passwordConfirmation);
+        Logger.debug(`Submitting signup form for username: ${userData.username}`);
         await this.registerBtn.click();
     }
 

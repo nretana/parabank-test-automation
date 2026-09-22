@@ -14,13 +14,9 @@ export interface UserRegistration {
     city: string
     state: string
     zipCode: string
-    phone: string
+    phoneNumber: string
     ssn: string
     username: string
     password: string
-    confirm: string
-}
-export interface TestCredentials {
-    valid: User[] | UserRegistration[]
-    invalid: User[] | UserRegistration[]
+    passwordConfirmation: string
 }

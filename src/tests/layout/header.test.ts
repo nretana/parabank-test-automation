@@ -1,6 +1,6 @@
 import { expect, Page } from "@playwright/test";
-import { test } from "src/fixtures/merge.fixture";
-import { HyperLink } from "src/@types/hyperlink";
+import { test } from "@fixtures/merge.fixture";
+import { HyperLink } from "@@types/hyperlink";
 
 const verifyHeaderLinks = async (page: Page, headerLinks: HyperLink[]) => {
   for (const link of headerLinks) {
@@ -11,8 +11,8 @@ const verifyHeaderLinks = async (page: Page, headerLinks: HyperLink[]) => {
       await expect.soft(link.locator).toHaveText(link.expectedLabel);
     }
     await expect.soft(link.locator).toHaveAttribute("href", link.expectedHref);
-   
-    if(link.isUseDispatch){
+
+    if (link.isUseDispatch) {
       await link.locator.dispatchEvent("click");
     } else {
       await link.locator.click();

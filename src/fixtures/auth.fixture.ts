@@ -1,12 +1,12 @@
 import { Page, test as base, expect } from '@playwright/test'
 import { TEST_USER_CREDENTIALS } from '@test-data/signin.data';
-import { LogInSideBarComponent } from '@pages/components/signin-sidebar.component';
-import { LoggedInSideBarComponent } from '@pages/components/signedin-sidebar.component';
-import { AccountsOverviewPage } from 'src/pages/accounts-overview.page';
+import { SignInSideBarComponent } from '@pages/components/signin-sidebar.component';
+import { SignedInSideBarComponent } from '@pages/components/signedin-sidebar.component';
+import { AccountsOverviewPage } from '@pages/accounts-overview.page';
 
 export const authTest = base.extend<{ authPage: Page }>({
     authPage: async({ page }, use) => {
-        const currentUser = TEST_USER_CREDENTIALS.valid.find(u => u.role === "member");
+        const currentUser = (TEST_USER_CREDENTIALS.valid).find(u => u.role === "member");
         if(currentUser === null && currentUser){
             throw new Error(`[Auth error]: credentials not found`);
         }
@@ -15,13 +15,13 @@ export const authTest = base.extend<{ authPage: Page }>({
             throw new Error(`[Auth error]: credentials not found`);
         }
 
-        const loginPage = new LogInSideBarComponent(page);
-        await loginPage.navigate();
-        await loginPage.submitLogin(currentUser.username, currentUser.password);
+        const signinPage = new SignInSideBarComponent(page);
+        await signinPage.navigate();
+        await signinPage.submitLogin(currentUser.username, currentUser.password);
 
-        const loggedInComponent = new LoggedInSideBarComponent(page);
+        const signedInComponent = new SignedInSideBarComponent(page);
         //TODO: validate firstname and lastname of the current user in the left panel
-        await expect(loggedInComponent.welcomeText).toBeVisible();
+        await expect(signedInComponent.welcomeText).toBeVisible();
 
         const accountsOverview = new AccountsOverviewPage(page);
         await expect(page).toHaveURL(accountsOverview.EXPECTED_PAGE_URL);

@@ -1,7 +1,7 @@
 import { Page, Locator } from "@playwright/test";
-import { getUrlPattern } from "src/utils/getUrlPattern";
-import { HyperLink } from "src/@types/hyperlink";
-import { BASE_URL } from "src/constants/base.constant";
+import { getUrlPattern } from "@utils/get-url-pattern";
+import { HyperLink } from "@@types/hyperlink";
+import { BASE_URL } from "@constants/base.constant";
 
 export class FooterComponent {
     readonly page: Page;

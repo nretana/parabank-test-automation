@@ -1,5 +1,5 @@
 import { expect } from "@playwright/test";
-import { test } from "src/fixtures/merge.fixture";
+import { test } from "@fixtures/merge.fixture";
 
 test("Global navigation footer", { tag: ["@regression"] }, async ({ page, context, footer }) => {
   await footer.navigate();

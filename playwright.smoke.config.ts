@@ -35,6 +35,7 @@ export default defineConfig({
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
   },
+  globalTeardown: require.resolve("./src/utils/global-teardown"),
   grep: /@smoke/,
   testIgnore: '**/*.wip.test.ts',
   /* Configure projects for major browsers */

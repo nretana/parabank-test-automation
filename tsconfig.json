@@ -1,22 +1,21 @@
 {
   "compilerOptions": {
-    "target": "ESNext",
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "baseUrl": ".",
-    "paths": {
-      "@@types/*": ["src/@types/*"],
-      "@constants/*": ["src/constants/*"],
-      "@pages/*": ["src/pages/*"],
-      "@fixtures/*": ["src/fixtures/*"],
-      "@utils/*": ["src/utils/*"],
-      "@test-data/*": ["src/test-data/*"]
-    },
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
     "strict": true,
-    "esModuleInterop": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
+    "noEmit": true,
+    "types": ["node"],
+    "paths": {
+      "@@types/*": ["./src/@types/*"],
+      "@constants/*": ["./src/constants/*"],
+      "@pages/*": ["./src/pages/*"],
+      "@fixtures/*": ["./src/fixtures/*"],
+      "@utils/*": ["./src/utils/*"],
+      "@test-data/*": ["./src/test-data/*"]
+    }
   },
-  "include": ["./**/*.ts", "playwright.regression.config.ts", "playwright.smoke.config.ts"],
+  "include": ["./**/*.ts", "playwright*.config.ts"],
   "exclude": ["node_modules"]
 }   

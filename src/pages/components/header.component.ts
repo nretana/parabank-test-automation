@@ -1,7 +1,7 @@
 import { Locator, Page } from "@playwright/test";
-import { HyperLink } from "src/@types/hyperlink";
-import { BASE_URL } from "src/constants/base.constant";
-import { getUrlPattern } from "src/utils/getUrlPattern";
+import { HyperLink } from "@@types/hyperlink";
+import { BASE_URL } from "@constants/base.constant";
+import { getUrlPattern } from "@utils/get-url-pattern";
 
 export class HeaderComponent {
   readonly page: Page;

@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "typecheck": "tsc --noEmit",
     "test": "playwright test",
     "test:ui": "playwright test --ui",
     "test:debug": "playwright test --debug",
@@ -11,7 +12,7 @@
     "test:@accessibility": "npx playwright test --config=playwright.regression.config.ts --grep @accessibility",
     "test:@security": "npx playwright test --config=playwright.regression.config.ts --grep @security",
     "test:@performance": "npx playwright test --config=playwright.regression.config.ts --grep @performance",
-    "test:@regression": "dotenv -e .env.qa -- npx playwright test --config=playwright.regression.config.ts",
+    "test:@regression": "dotenv -e .env.qa -- npm run typecheck && npx playwright test --config=playwright.regression.config.ts",
     "test:@smoke": "dotenv -e .env.qa npx playwright test --config=playwright.smoke.config.ts",
     "report:@regression": "playwright show-report src/reports/regression",
     "report:@smoke": "playwright show-report src/reports/smoke"

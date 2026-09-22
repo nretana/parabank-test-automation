@@ -1,6 +1,7 @@
-import { TestCredentials } from '@@types/user'
+import type { UserRegistration } from '@@types/user'
+import type { TestData } from '@@types/test-data'
 
-export const TEST_USER_REGISTRATION: TestCredentials = {
+export const TEST_USER_REGISTRATION: TestData<UserRegistration> = {
     valid: [{
          firstName: "Jane",
          lastName: "Doe",
@@ -8,11 +9,11 @@ export const TEST_USER_REGISTRATION: TestCredentials = {
          city: "San Jose",
          state: "CA",
          zipCode: "12345",
-         phone: "1234567890",
+         phoneNumber: "1234567890",
          ssn: "123-45-6789",
          username: "janedoe" + Date.now(),
          password: "demo1234",
-         confirm: "demo1234"
+         passwordConfirmation: "demo1234"
     }],
     invalid: [{
         firstName: "",
@@ -21,10 +22,10 @@ export const TEST_USER_REGISTRATION: TestCredentials = {
         city: "",
         state: "",
         zipCode: "",
-        phone: "",
+        phoneNumber: "",
         ssn: "",
         username: "",
         password: "",
-        confirm: ""
+        passwordConfirmation: ""
     }]
 }

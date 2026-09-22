@@ -1,6 +1,7 @@
-import { TestCredentials } from '../@types/user'
+import type { TestData } from '@@types/test-data'
+import type { User } from '@@types/user'
 
-export const TEST_USER_CREDENTIALS: TestCredentials = {
+export const TEST_USER_CREDENTIALS: TestData<User> = {
     valid: [{
         role: "member",
         username: "john",

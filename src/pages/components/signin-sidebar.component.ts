@@ -1,6 +1,6 @@
 import { Page, Locator } from '@playwright/test'
-import { BASE_URL } from 'src/constants/base.constant';
-import { getUrlPattern } from 'src/utils/getUrlPattern';
+import { BASE_URL } from '@constants/base.constant';
+import { getUrlPattern } from '@utils/get-url-pattern';
 
 
 export class SignInSideBarComponent {
