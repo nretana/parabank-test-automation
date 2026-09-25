@@ -4,6 +4,7 @@ node_modules/
 /test-results/
 /src/reports
 /playwright-report/
+/monocart-report/
 /blob-report/
 /playwright/.cache/
 /playwright/.auth/

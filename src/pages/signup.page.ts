@@ -92,10 +92,12 @@ export class SignUpPage {
     }
 
     nagivate = async () => {
-        await this.page.goto(`${BASE_URL}/${this.PAGE_NAME}.htm`);
+        const currentUrl = `${BASE_URL}/${this.PAGE_NAME}.htm`;
+        Logger.debug(`Navigating to url: ${currentUrl}`);
+        await this.page.goto(currentUrl);
     }
 
-    submitSignUp = async (userData: UserRegistration) => {
+    FillSignUpForm = async (userData: UserRegistration) => {
         Logger.debug(`Filling signup form for username: ${userData.username}`);
         await this.firstNameInput.fill(userData.firstName);
         await this.lastNameInput.fill(userData.lastName);
@@ -108,7 +110,10 @@ export class SignUpPage {
         await this.usernameInput.fill(userData.username);
         await this.passwordInput.fill(userData.password);
         await this.passwordConfirmationInput.fill(userData.passwordConfirmation);
-        Logger.debug(`Submitting signup form for username: ${userData.username}`);
+    }
+
+    submitSignUpForm = async (username: string) => {
+        Logger.debug(`Submitting signup form for username: ${username}`);
         await this.registerBtn.click();
     }
 

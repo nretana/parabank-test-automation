@@ -1,20 +1,15 @@
-import { defineConfig, devices } from '@playwright/test';
-/**
- * Read environment variables from file.
- * https://github.com/motdotla/dotenv
- */
-import dotenv from 'dotenv';
-import path from 'path';
-dotenv.config({ path: path.resolve(__dirname, '.env.qa') });
+import { defineConfig, devices } from "@playwright/test";
+import dotenv from "dotenv";
+import path from "path";
+dotenv.config({ path: path.resolve(__dirname, ".env.qa") });
 
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
 
-
 export default defineConfig({
-  tsconfig: 'tsconfig.json',
-  testDir: './src/tests',
+  tsconfig: "tsconfig.json",
+  testDir: "./src/tests",
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -26,32 +21,42 @@ export default defineConfig({
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: [["./src/utils/tag-filter-reporter.ts", { currentTag: "@regression" }],
              ['html', { outputFolder: 'src/reports/regression' }]],
+  /*reporter: [
+    ["list"],
+    [
+      "monocart-reporter",
+      {
+        name: "My Test Report",
+        outputFile: "./monocart-report/index.html",
+      },
+    ],
+  ],*/
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('')`. */
     // baseURL: 'http://localhost:3000',
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'on-first-retry',
+    trace: "on-first-retry",
   },
   globalTeardown: require.resolve("./src/utils/global-teardown"),
   grep: /@regression/,
-  testIgnore: '**/*.wip.test.ts',
+  testIgnore: "**/*.wip.test.ts",
   /* Configure projects for major browsers */
   projects: [
     {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      name: "chromium",
+      use: { ...devices["Desktop Chrome"] },
     },
 
     {
-      name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
+      name: "firefox",
+      use: { ...devices["Desktop Firefox"] },
     },
 
     {
-      name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
+      name: "webkit",
+      use: { ...devices["Desktop Safari"] },
     },
   ],
 

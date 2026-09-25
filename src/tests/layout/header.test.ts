@@ -17,10 +17,10 @@ const verifyHeaderLinks = async (page: Page, headerLinks: HyperLink[]) => {
     } else {
       await link.locator.click();
     }
-
+    await page.waitForURL(link.expectedRedirectUrl, { waitUntil: 'domcontentloaded' });
     await expect.soft(page).toHaveURL(link.expectedRedirectUrl);
     if (link.isExternal) {
-      await page.goBack();
+      await page.goBack({ waitUntil: 'domcontentloaded' });
     }
     if (link.expectedElements) {
       for (const expectedElem of link.expectedElements) {
@@ -35,19 +35,27 @@ const verifyHeaderLinks = async (page: Page, headerLinks: HyperLink[]) => {
 
 test.describe("Header Component", { tag: ["@regression"] }, () => {
   test.beforeEach(async ({ header }) => {
-    await header.navigate();
+    await test.step("Navigating to home page", async() => {
+      await header.navigate();
+    });
   });
 
   test("Header renders logo links and logo caption", async ({ page, header }) => {
-    await expect(header.logoCaption).toBeVisible();
-    await verifyHeaderLinks(page, header.logoLinks);
+    await test.step("verifying logo links", async() => {
+      await expect(header.logoCaption).toBeVisible();
+      await verifyHeaderLinks(page, header.logoLinks);
+    });
   });
 
   test("Left navigation menu renders all links", async ({ page, header }) => {
-    await verifyHeaderLinks(page, header.leftMenuLinks);
+    await test.step("verifying links from left navigation menu", async() => {
+      await verifyHeaderLinks(page, header.leftMenuLinks);
+    });
   });
 
   test("Right navigation menu renders all links", async ({ page, header }) => {
-    await verifyHeaderLinks(page, header.rightMenuLinks);
+    await test.step("verifying links from right navigation menu", async() => {
+      await verifyHeaderLinks(page, header.rightMenuLinks);
+    });
   });
 });
