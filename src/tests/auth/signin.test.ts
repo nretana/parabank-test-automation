@@ -4,19 +4,19 @@ import { SignedInSideBarComponent } from "@pages/components/signedin-sidebar.com
 import { SignInSideBarComponent } from "@pages/components/signin-sidebar.component";
 import { test } from "@fixtures/merge.fixture";
 import { userCredentials, signinErrors, signedinConfirmation } from "@test-data/signin.data";
-import { TEST_USER_REGISTRATION } from '@test-data/signup.data';
+import { userRegistration } from '@test-data/signup.data';
 import type { UserRegistration } from '@@types/user';
 
 import { SignUpPage } from '@pages/signup.page';
 
 test("Successful sign in using valid credentials", { tag: ["@smoke", "@regression"] }, async ({ page }) => {
-  const newUser = TEST_USER_REGISTRATION.valid[0] as UserRegistration;
+  const newUser = userRegistration.valid[0] as UserRegistration;
   const signInSideBar = new SignInSideBarComponent(page);
   const signedInSideBar = new SignedInSideBarComponent(page);
   const signupPage = new SignUpPage(page);
 
   await test.step("Precondition: Register a new user", async () => {
-    await signupPage.registetUser(newUser);
+    await signupPage.registerUser(newUser);
     await signedInSideBar.logOut(signInSideBar.EXPECTED_PAGE_URL);
   });
 

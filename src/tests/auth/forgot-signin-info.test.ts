@@ -1,7 +1,7 @@
 import { ForgotSignInInfoPage } from "@pages/forgot-signin-info.page";
 import { test } from "@fixtures/merge.fixture";
 import { TEST_FORGOT_SIGNIN_INFO } from "@test-data/forgot-signin.data";
-import { TEST_USER_REGISTRATION } from '@test-data/signup.data';
+import { userRegistration } from '@test-data/signup.data';
 import type { UserRegistration } from "@@types/user";
 import { expect } from "@playwright/test";
 import { SignUpPage } from '@pages/signup.page';
@@ -9,14 +9,14 @@ import { SignedInSideBarComponent } from '@pages/components/signedin-sidebar.com
 import { SignInSideBarComponent } from '@pages/components/signin-sidebar.component';
 
 test("Successful recover sign in info with valid data", { tag: ["@smoke", "@regression"] }, async ({ page }) => {
-  const newUser = TEST_USER_REGISTRATION.valid[0] as UserRegistration;
+  const newUser = userRegistration.valid[0] as UserRegistration;
   const forgotInfoPage = new ForgotSignInInfoPage(page);
   const signupPage =  new SignUpPage(page);
   const signInSideBar = new SignInSideBarComponent(page);
   const signedInSideBar = new SignedInSideBarComponent(page);
   
   await test.step("Precondition: Register a new user", async () => {
-    await signupPage.registetUser(newUser);
+    await signupPage.registerUser(newUser);
     await signedInSideBar.logOut(signInSideBar.EXPECTED_PAGE_URL);
   });
 

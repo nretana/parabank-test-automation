@@ -48,7 +48,6 @@ export class SignUpPage {
   readonly errorMessageList: Locator[];
   private readonly PAGE_NAME = "register";
   readonly EXPECTED_PAGE_URL = new RegExp(getUrlPattern(this.PAGE_NAME));
-  readonly EXPECTED_USER_REGISTERED_SUBTITLE = "Your account was created successfully. You are now logged in.";
 
   constructor(page: Page) {
     this.page = page;
@@ -144,11 +143,9 @@ export class SignUpPage {
     await this.registerBtn.click();
   };
 
-  registetUser = async (userData: UserRegistration): Promise<void> => {
+  registerUser = async (userData: UserRegistration): Promise<void> => {
     await this.nagivate();
     await this.FillSignUpForm(userData);
     await this.submitSignUpForm(userData);
   };
-
-  expectedUserRegisteredHeading = (username: string): string => `Welcome ${username}`;
 }

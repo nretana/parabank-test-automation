@@ -47,13 +47,9 @@ export class SignedInSideBarComponent {
   };
 
   logOut = async (waitForUrl?: string | RegExp): Promise<void> => {
+    await this.logOutLink.click();
     if (waitForUrl) {
-    await Promise.all([
-        this.page.waitForURL(waitForUrl, { waitUntil: "domcontentloaded" }), 
-        this.logOutLink.click()]);
-    }
-    else {
-        await this.logOutLink.click();
+       await this.page.waitForURL(waitForUrl, { waitUntil: "domcontentloaded" });
     }
   };
 
