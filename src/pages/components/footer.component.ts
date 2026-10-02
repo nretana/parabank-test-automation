@@ -79,7 +79,7 @@ export class FooterComponent {
     }
 
     navigate = async(): Promise<void> => {
-        await this.page.goto(`${BASE_URL}/${this.PAGE_NAME}.htm`)
+        await this.page.goto(`${BASE_URL}/${this.PAGE_NAME}.htm`);
     }
 
 }

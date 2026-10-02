@@ -3,22 +3,35 @@ import { AccountsOverviewPage } from "@pages/accounts-overview.page";
 import { SignedInSideBarComponent } from "@pages/components/signedin-sidebar.component";
 import { SignInSideBarComponent } from "@pages/components/signin-sidebar.component";
 import { test } from "@fixtures/merge.fixture";
-import { TEST_USER_CREDENTIALS } from "@test-data/signin.data";
+import { userCredentials, signinErrors, signedinConfirmation } from "@test-data/signin.data";
+import { TEST_USER_REGISTRATION } from '@test-data/signup.data';
+import type { UserRegistration } from '@@types/user';
 
-test("Successful login using valid credentials", { tag: ["@smoke", "@regression"] }, async ({ page }) => {
-  const { username, password } = TEST_USER_CREDENTIALS.valid[0];
-  const signInSideBarcomponent = new SignInSideBarComponent(page);
+import { SignUpPage } from '@pages/signup.page';
+
+test("Successful sign in using valid credentials", { tag: ["@smoke", "@regression"] }, async ({ page }) => {
+  const newUser = TEST_USER_REGISTRATION.valid[0] as UserRegistration;
+  const signInSideBar = new SignInSideBarComponent(page);
+  const signedInSideBar = new SignedInSideBarComponent(page);
+  const signupPage = new SignUpPage(page);
+
+  await test.step("Precondition: Register a new user", async () => {
+    await signupPage.registetUser(newUser);
+    await signedInSideBar.logOut(signInSideBar.EXPECTED_PAGE_URL);
+  });
+
   await test.step("Navigating to sign in page", async () => {
-    await signInSideBarcomponent.navigate();
+    await signInSideBar.navigate();
   });
 
   await test.step("Filling and submitting sign in form", async () => {
-    await signInSideBarcomponent.submitLogin(username, password);
+    await signInSideBar.submitLogin(newUser.username, newUser.password);
   });
 
   await test.step("Validating user has signed in", async () => {
     const signedInSideBar = new SignedInSideBarComponent(page);
     await expect(signedInSideBar.welcomeText).toBeVisible();
+    await expect(signedInSideBar.welcomeText).toHaveText(signedinConfirmation.greetingMessage(newUser.firstName, newUser.lastName));
     await expect(signedInSideBar.accountServicesHeading).toHaveText("Account Services");
     for (const link of signedInSideBar.accountServicesLinks) {
       await expect.soft(link).toBeVisible();
@@ -26,8 +39,8 @@ test("Successful login using valid credentials", { tag: ["@smoke", "@regression"
   });
 });
 
-test("Unsuccessful login attempt with invalid username or password", { tag: ["@regression"] }, async ({ page }) => {
-  const { username, password } = TEST_USER_CREDENTIALS.invalid[0];
+test("Unsuccessful sign in attempt with invalid username or password", { tag: ["@regression"] }, async ({ page }) => {
+  const { username, password } = userCredentials.invalid[0];
   const signInSideBarcomponent = new SignInSideBarComponent(page);
   await test.step("Navigating to sign in page", async () => {
     await signInSideBarcomponent.navigate();
@@ -39,12 +52,13 @@ test("Unsuccessful login attempt with invalid username or password", { tag: ["@r
 
   await test.step("Validating error message is displayed", async () => {
     await expect(signInSideBarcomponent.errorHeading).toBeVisible();
+    await expect(signInSideBarcomponent.errorHeading).toHaveText(signinErrors.incorrectValues.header);
     await expect(signInSideBarcomponent.errorMessage).toBeVisible();
-    await expect(signInSideBarcomponent.errorMessage).toHaveText("The username and password could not be verified.");
+    await expect(signInSideBarcomponent.errorMessage).toHaveText(signinErrors.incorrectValues.message);
   });
 });
 
-test("Unsuccessful login attempt with empty username or password", { tag: ["@regression"] }, async ({ page }) => {
+test("Unsuccessful sign in attempt with empty username or password", { tag: ["@regression"] }, async ({ page }) => {
   const signInSideBarcomponent = new SignInSideBarComponent(page);
   await test.step("Navigating to sign in page", async () => {
     await signInSideBarcomponent.navigate();
@@ -56,8 +70,9 @@ test("Unsuccessful login attempt with empty username or password", { tag: ["@reg
 
   await test.step("Validating error message is displayed", async () => {
     await expect(signInSideBarcomponent.errorHeading).toBeVisible();
+    await expect(signInSideBarcomponent.errorHeading).toHaveText(signinErrors.emptyValues.header);
     await expect(signInSideBarcomponent.errorMessage).toBeVisible();
-    await expect(signInSideBarcomponent.errorMessage).toHaveText("Please enter a username and password.");
+    await expect(signInSideBarcomponent.errorMessage).toHaveText(signinErrors.emptyValues.message);
   });
 });
 
@@ -69,13 +84,14 @@ test("Redirection attempt to secure pages without active session authentication"
 
   await test.step("Validating error message is displayed", async () => {
     await expect(overviewPage.errorHeading).toBeVisible();
+    await expect(overviewPage.errorHeading).toHaveText(signinErrors.noActiveSession.header);
     await expect(overviewPage.errorMessage).toBeVisible();
-    await expect(overviewPage.errorMessage).toHaveText("An internal error has occurred and has been logged.");
+    await expect(overviewPage.errorMessage).toHaveText(signinErrors.noActiveSession.message);
   });
 });
 
 test("Successful user logout and invalidation of the active session", { tag: ["@security", "@smoke", "@regression"] }, async ({ page }) => {
-  const { username, password } = TEST_USER_CREDENTIALS.valid[0];
+  const { username, password } = userCredentials.valid[0];
   const signInSideBarcomponent = new SignInSideBarComponent(page);
   await test.step("Navigating to sign in page", async () => {
     await signInSideBarcomponent.navigate();

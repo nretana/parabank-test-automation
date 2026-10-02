@@ -1,4 +1,3 @@
-
 export interface User {
     role: "member" | "admin" 
     username: string
@@ -19,4 +18,14 @@ export interface UserRegistration {
     username: string
     password: string
     passwordConfirmation: string
+}
+
+export interface ForgotSignInInfo {
+    firstName: string
+    lastName: string
+    address: string
+    city: string
+    state: string
+    zipCode: string
+    ssn: string
 }

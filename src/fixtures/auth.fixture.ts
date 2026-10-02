@@ -1,12 +1,12 @@
 import { Page, test as base, expect } from '@playwright/test'
-import { TEST_USER_CREDENTIALS } from '@test-data/signin.data';
+import { userCredentials, signedinConfirmation } from '@test-data/signin.data';
 import { SignInSideBarComponent } from '@pages/components/signin-sidebar.component';
 import { SignedInSideBarComponent } from '@pages/components/signedin-sidebar.component';
 import { AccountsOverviewPage } from '@pages/accounts-overview.page';
 
 export const authTest = base.extend<{ authPage: Page }>({
     authPage: async({ page }, use) => {
-        const currentUser = (TEST_USER_CREDENTIALS.valid).find(u => u.role === "member");
+        const currentUser = (userCredentials.valid).find(u => u.role === "member");
         if(currentUser === null && currentUser){
             throw new Error(`[Auth error]: credentials not found`);
         }
@@ -20,9 +20,8 @@ export const authTest = base.extend<{ authPage: Page }>({
         await signinPage.submitLogin(currentUser.username, currentUser.password);
 
         const signedInComponent = new SignedInSideBarComponent(page);
-        //TODO: validate firstname and lastname of the current user in the left panel
         await expect(signedInComponent.welcomeText).toBeVisible();
-
+        await expect(signedInComponent.welcomeText).toHaveText(signedinConfirmation.greetingMessage(currentUser.firstName, currentUser.lastName));
         const accountsOverview = new AccountsOverviewPage(page);
         await expect(page).toHaveURL(accountsOverview.EXPECTED_PAGE_URL);
         await use(page);

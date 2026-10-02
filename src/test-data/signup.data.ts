@@ -1,5 +1,6 @@
 import type { UserRegistration } from '@@types/user'
 import type { TestData } from '@@types/test-data'
+import { getRandomSSN } from '@utils/get-random-ssn'
 
 export const TEST_USER_REGISTRATION: TestData<UserRegistration> = {
     valid: [{
@@ -10,10 +11,10 @@ export const TEST_USER_REGISTRATION: TestData<UserRegistration> = {
          state: "CA",
          zipCode: "12345",
          phoneNumber: "1234567890",
-         ssn: "123-45-6789",
+         ssn:  getRandomSSN(),
          username: "janedoe" + Date.now(),
-         password: "demo1234",
-         passwordConfirmation: "demo1234"
+         password: "janedemo",
+         passwordConfirmation: "janedemo"
     }],
     invalid: [{
         firstName: "",
