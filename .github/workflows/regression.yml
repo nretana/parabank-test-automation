@@ -36,7 +36,7 @@ jobs:
           retention-days: 10
 
   deploy-test-report:
-    needs: test 
+    needs: run-tests 
     if: always()
     runs-on: ubuntu-24.04
     environment: qa
