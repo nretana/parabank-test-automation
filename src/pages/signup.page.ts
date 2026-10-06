@@ -47,7 +47,7 @@ export class SignUpPage {
   readonly registerBtn: Locator;
   readonly userRegisteredHeading: Locator;
   readonly userRegisteredSubtitle: Locator;
-  readonly signUpFields: SignUpField[]
+  private readonly signUpFields: SignUpField[]
   private readonly PAGE_NAME = "register";
   readonly EXPECTED_PAGE_URL = new RegExp(getUrlPattern(this.PAGE_NAME));
 

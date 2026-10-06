@@ -53,6 +53,11 @@ export const signupErrors = {
   },
 };
 
+export const signupForm = {
+  header: "Signing up is easy!",
+  message: "If you have an account with us you can sign-up for free instant online access. You will have to provide some personal information."
+}
+
 export const signupConfirmation = {
   header: (username: string): string => `Welcome ${username}`,
   message: "Your account was created successfully. You are now logged in.",
