@@ -10,7 +10,7 @@ import type { UserRegistration } from '@@types/user';
 import { SignUpPage } from '@pages/signup.page';
 
 test("Successful sign in using valid credentials", { tag: ["@smoke", "@regression"] }, async ({ page }) => {
-  const newUser = userRegistration.valid[0] as UserRegistration;
+  const newUser = userRegistration.getValidUser() as UserRegistration;
   const signInSideBar = new SignInSideBarComponent(page);
   const signedInSideBar = new SignedInSideBarComponent(page);
   const signupPage = new SignUpPage(page);

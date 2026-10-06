@@ -3,6 +3,8 @@ import { getUrlPattern } from "@utils/get-url-pattern";
 import { BASE_URL } from "@constants/base.constant";
 import { Logger } from "@utils/logger";
 import type { UserRegistration } from "@@types/user";
+import type { SignUpField } from '@@types/signup';
+import { signupValidatorErrors } from "@test-data/signup.data";
 
 export class SignUpPage {
   private readonly page: Page;
@@ -45,7 +47,7 @@ export class SignUpPage {
   readonly registerBtn: Locator;
   readonly userRegisteredHeading: Locator;
   readonly userRegisteredSubtitle: Locator;
-  readonly errorMessageList: Locator[];
+  readonly signUpFields: SignUpField[]
   private readonly PAGE_NAME = "register";
   readonly EXPECTED_PAGE_URL = new RegExp(getUrlPattern(this.PAGE_NAME));
 
@@ -54,30 +56,30 @@ export class SignUpPage {
     this.mainContent = page.locator("#rightPanel");
     this.signupHeading = page.getByRole("heading", { name: "Signing up is easy!" });
     this.signupSubTitle = page.getByText("If you have an account with");
-    
-    this.firstNameLabel = this.mainContent.getByText("First Name:");
+
+    this.firstNameLabel = page.getByText("First Name:");
     this.firstNameInput = page.locator('[id="customer.firstName"]');
-    this.firstNameErrorMessage = this.mainContent.getByText("First name is required.");
+    this.firstNameErrorMessage = page.locator('[id="customer.firstName.errors"]');
 
     this.lastNameLabel = page.getByText("Last Name:");
     this.lastNameInput = page.locator('[id="customer.lastName"]');
-    this.lastNameErrorMessage = this.mainContent.getByText("Last name is required.");
+    this.lastNameErrorMessage = page.locator('[id="customer.lastName.errors"]');
 
     this.addressLabel = page.getByText("Address:");
     this.addressInput = page.locator('[id="customer.address.street"]');
-    this.addressErrorMessage = this.mainContent.getByText("Address is required.");
+    this.addressErrorMessage = page.locator('[id="customer.address.street.errors"]');
 
     this.cityLabel = page.getByText("City:");
     this.cityInput = page.locator('[id="customer.address.city"]');
-    this.cityErrorMessage = this.mainContent.getByText("City is required.");
+    this.cityErrorMessage = page.locator('[id="customer.address.city.errors"]');
 
     this.stateLabel = page.getByText("State:");
     this.stateInput = page.locator('[id="customer.address.state"]');
-    this.stateErrorMessage = this.mainContent.getByText("State is required.");
+    this.stateErrorMessage = page.locator('[id="customer.address.state.errors"]');
 
     this.zipCodeLabel = page.getByText("Zip Code:");
     this.zipCodeInput = page.locator('[id="customer.address.zipCode"]');
-    this.zipCodeErrorMessage = this.mainContent.getByText("Zip Code is required.");
+    this.zipCodeErrorMessage = page.locator('[id="customer.address.zipCode.errors"]');
 
     this.phoneNumberLabel = page.getByText("Phone #:");
     this.phoneNumberInput = page.locator('[id="customer.phoneNumber"]');
@@ -86,34 +88,99 @@ export class SignUpPage {
 
     this.ssnLabel = page.getByText("SSN:");
     this.ssnInput = page.locator('[id="customer.ssn"]');
-    this.ssnErrorMessage = this.mainContent.getByText("Social Security Number is required.");
+    this.ssnErrorMessage = page.locator('[id="customer.ssn.errors"]');
 
     this.usernameLabel = page.getByText("Username:");
     this.usernameInput = page.locator('[id="customer.username"]');
-    this.usernameErrorMessage = this.mainContent.getByText("Username is required.");
+    this.usernameErrorMessage = page.locator('[id="customer.username.errors"]');
 
     this.passwordLabel = page.getByText("Password:");
     this.passwordInput = page.locator('[id="customer.password"]');
-    this.passwordErrorMessage = this.mainContent.getByText("Password is required.");
+    this.passwordErrorMessage = page.locator('[id="customer.password.errors"]');
 
     this.passwordConfirmationLabel = page.getByText("Confirm:");
-    this.passwordConfirmationInput = page.locator("#repeatedPassword");
-    this.passwordConfirmationErrorMessage = this.mainContent.getByText("Password confirmation is required.");
+    this.passwordConfirmationInput = page.locator('[id="repeatedPassword"]');
+    this.passwordConfirmationErrorMessage = page.locator('[id="repeatedPassword.errors"]');
 
     this.registerBtn = page.getByRole("button", { name: "Register" });
-    this.userRegisteredHeading = this.page.locator("#rightPanel > h1");
-    this.userRegisteredSubtitle = this.page.locator("#rightPanel > p");
-    this.errorMessageList = [
-      this.firstNameErrorMessage,
-      this.lastNameErrorMessage,
-      this.addressErrorMessage,
-      this.cityErrorMessage,
-      this.stateErrorMessage,
-      this.zipCodeErrorMessage,
-      this.ssnErrorMessage,
-      this.usernameErrorMessage,
-      this.passwordErrorMessage,
-      this.passwordConfirmationErrorMessage,
+    this.userRegisteredHeading = page.locator("#rightPanel > h1");
+    this.userRegisteredSubtitle = page.locator("#rightPanel > p");
+    this.signUpFields = [
+      {
+        label: this.firstNameLabel,
+        expectedLabel: "First Name:",
+        input: this.firstNameInput,
+        requiredError: this.firstNameErrorMessage,
+        expectedRequiredError: signupValidatorErrors.firstNameRequired,
+      },
+      {
+        label: this.lastNameLabel,
+        expectedLabel: "Last Name:",
+        input: this.lastNameInput,
+        requiredError: this.lastNameErrorMessage,
+        expectedRequiredError: signupValidatorErrors.lastNameRequired,
+      },
+      {
+        label: this.addressLabel,
+        expectedLabel: "Address:",
+        input: this.addressInput,
+        requiredError: this.addressErrorMessage,
+        expectedRequiredError: signupValidatorErrors.addressRequired,
+      },
+      {
+        label: this.cityLabel,
+        expectedLabel: "City:",
+        input: this.cityInput,
+        requiredError: this.cityErrorMessage,
+        expectedRequiredError: signupValidatorErrors.cityRequired,
+      },
+      {
+        label: this.stateLabel,
+        expectedLabel: "State:",
+        input: this.stateInput,
+        requiredError: this.stateErrorMessage,
+        expectedRequiredError: signupValidatorErrors.stateRequired,
+      },
+      {
+        label: this.zipCodeLabel,
+        expectedLabel: "Zip Code:",
+        input: this.zipCodeInput,
+        requiredError: this.zipCodeErrorMessage,
+        expectedRequiredError: signupValidatorErrors.zipCodeRequired,
+      },
+      {
+        label: this.phoneNumberLabel,
+        expectedLabel: "Phone #:",
+        input: this.phoneNumberInput
+      },
+      {
+        label: this.ssnLabel,
+        expectedLabel: "SSN:",
+        input: this.ssnInput,
+        requiredError: this.ssnErrorMessage,
+        expectedRequiredError: signupValidatorErrors.ssnRequired,
+      },
+      {
+        label: this.usernameLabel,
+        expectedLabel: "Username:",
+        input: this.usernameInput,
+        requiredError: this.usernameErrorMessage,
+        expectedRequiredError: signupValidatorErrors.usernameRequired,
+      },
+      {
+        label: this.passwordLabel,
+        expectedLabel: "Password:",
+        input: this.passwordInput,
+        requiredError: this.passwordErrorMessage,
+        expectedRequiredError: signupValidatorErrors.passwordRequired,
+      },
+      {
+        label: this.passwordConfirmationLabel,
+        expectedLabel: "Confirm:",
+        input: this.passwordConfirmationInput,
+        requiredError: this.passwordConfirmationErrorMessage,
+        expectedRequiredError: signupValidatorErrors.passwordConfirmationRequired,
+      },
     ];
   }
 
@@ -148,4 +215,82 @@ export class SignUpPage {
     await this.FillSignUpForm(userData);
     await this.submitSignUpForm(userData);
   };
+
+  getSignUpFields = () => [
+      {
+        label: this.firstNameLabel,
+        expectedLabel: "First Name:",
+        input: this.firstNameInput,
+        requiredError: this.firstNameErrorMessage,
+        expectedRequiredError: signupValidatorErrors.firstNameRequired,
+      },
+      {
+        label: this.lastNameLabel,
+        expectedLabel: "Last Name:",
+        input: this.lastNameInput,
+        requiredError: this.lastNameErrorMessage,
+        expectedRequiredError: signupValidatorErrors.lastNameRequired,
+      },
+      {
+        label: this.addressLabel,
+        expectedLabel: "Address:",
+        input: this.addressInput,
+        requiredError: this.addressErrorMessage,
+        expectedRequiredError: signupValidatorErrors.addressRequired,
+      },
+      {
+        label: this.cityLabel,
+        expectedLabel: "City:",
+        input: this.cityInput,
+        requiredError: this.cityErrorMessage,
+        expectedRequiredError: signupValidatorErrors.cityRequired,
+      },
+      {
+        label: this.stateLabel,
+        expectedLabel: "State:",
+        input: this.stateInput,
+        requiredError: this.stateErrorMessage,
+        expectedRequiredError: signupValidatorErrors.stateRequired,
+      },
+      {
+        label: this.zipCodeLabel,
+        expectedLabel: "Zip Code:",
+        input: this.zipCodeInput,
+        requiredError: this.zipCodeErrorMessage,
+        expectedRequiredError: signupValidatorErrors.zipCodeRequired,
+      },
+      {
+        label: this.phoneNumberLabel,
+        expectedLabel: "Phone #:",
+        input: this.phoneNumberInput
+      },
+      {
+        label: this.ssnLabel,
+        expectedLabel: "SSN:",
+        input: this.ssnInput,
+        requiredError: this.ssnErrorMessage,
+        expectedRequiredError: signupValidatorErrors.ssnRequired,
+      },
+      {
+        label: this.usernameLabel,
+        expectedLabel: "Username:",
+        input: this.usernameInput,
+        requiredError: this.usernameErrorMessage,
+        expectedRequiredError: signupValidatorErrors.usernameRequired,
+      },
+      {
+        label: this.passwordLabel,
+        expectedLabel: "Password:",
+        input: this.passwordInput,
+        requiredError: this.passwordErrorMessage,
+        expectedRequiredError: signupValidatorErrors.passwordRequired,
+      },
+      {
+        label: this.passwordConfirmationLabel,
+        expectedLabel: "Confirm:",
+        input: this.passwordConfirmationInput,
+        requiredError: this.passwordConfirmationErrorMessage,
+        expectedRequiredError: signupValidatorErrors.passwordConfirmationRequired,
+      },
+    ];
 }

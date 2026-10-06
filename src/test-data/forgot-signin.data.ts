@@ -1,7 +1,7 @@
 import type { ForgotSignInInfo } from "@@types/user";
 import type { TestData } from "@@types/test-data";
 
-export const TEST_FORGOT_SIGNIN_INFO: TestData<ForgotSignInInfo> = {
+export const forgotSignInInfo: TestData<ForgotSignInInfo> = {
   valid: [
     {
       firstName: "John",

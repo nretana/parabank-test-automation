@@ -1,6 +1,6 @@
 import { ForgotSignInInfoPage } from "@pages/forgot-signin-info.page";
 import { test } from "@fixtures/merge.fixture";
-import { TEST_FORGOT_SIGNIN_INFO } from "@test-data/forgot-signin.data";
+import { forgotSignInInfo } from "@test-data/forgot-signin.data";
 import { userRegistration } from '@test-data/signup.data';
 import type { UserRegistration } from "@@types/user";
 import { expect } from "@playwright/test";
@@ -9,7 +9,7 @@ import { SignedInSideBarComponent } from '@pages/components/signedin-sidebar.com
 import { SignInSideBarComponent } from '@pages/components/signin-sidebar.component';
 
 test("Successful recover sign in info with valid data", { tag: ["@smoke", "@regression"] }, async ({ page }) => {
-  const newUser = userRegistration.valid[0] as UserRegistration;
+  const newUser = userRegistration.getValidUser() as UserRegistration;
   const forgotInfoPage = new ForgotSignInInfoPage(page);
   const signupPage =  new SignUpPage(page);
   const signInSideBar = new SignInSideBarComponent(page);
@@ -40,7 +40,7 @@ test("Successful recover sign in info with valid data", { tag: ["@smoke", "@regr
 });
 
 test("Unsuccessful attempt to recover sign in info with empty form values", { tag: ["@regression"] }, async ({ page }) => {
-  const newUser = TEST_FORGOT_SIGNIN_INFO.invalid[0] as UserRegistration;
+  const newUser = forgotSignInInfo.invalid[0] as UserRegistration;
   const forgotInfoPage = new ForgotSignInInfoPage(page);
 
   await test.step("Navigating to forgot sign in info page", async () => {
@@ -63,7 +63,7 @@ test("Unsuccessful attempt to recover sign in info with empty form values", { ta
 });
 
 test("Unsuccessful attempt to recover sign in info with incorrect form values", { tag: ["@regression"] }, async ({ page }) => {
-  const newUser = TEST_FORGOT_SIGNIN_INFO.invalid[1] as UserRegistration;
+  const newUser = forgotSignInInfo.invalid[1] as UserRegistration;
   const forgotInfoPage = new ForgotSignInInfoPage(page);
 
   await test.step("Navigating to forgot sign in info page", async () => {
