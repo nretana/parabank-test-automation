@@ -2,14 +2,17 @@ import { Locator, Page } from "@playwright/test";
 import { getUrlPattern } from "@utils/get-url-pattern";
 import { BASE_URL } from "@constants/base.constant";
 import { Logger } from "@utils/logger";
-import type { ForgotSignInInfo, UserRegistration } from "@@types/user";
-import { getFullname } from '@utils/get-fullname';
+import type { CustomerLookup } from "@@types/user";
+import type { CustomerLookupField } from "@@types/customer-lookup";
+import { getFullname } from "@utils/get-fullname";
+import { customerLookupValidatorErrors } from "@test-data/customer-lookup.data";
 
-export class ForgotSignInInfoPage {
+export class CustomerLookupPage {
   private readonly page: Page;
   private readonly mainContent: Locator;
-  readonly forgotSigninInfoHeading: Locator;
-  readonly forgotSigninInfoSubtitle: Locator;
+  private readonly PAGE_NAME = "lookup";
+  readonly customerLookupHeading: Locator;
+  readonly customerLookupSubtitle: Locator;
   readonly firstNameLabel: Locator;
   readonly firstNameInput: Locator;
   readonly firstNameErrorMessage: Locator;
@@ -32,24 +35,18 @@ export class ForgotSignInInfoPage {
   readonly ssnInput: Locator;
   readonly ssnErrorMessage: Locator;
   readonly findInfoBtn: Locator;
-  readonly formSubmittedErrorHeading: Locator;
-  readonly formSubmittedErrorMessage: Locator;
-  readonly validationErrorList: Locator[];
-  readonly forgotSignInInfoSubmittedSubtitle: Locator;
-  readonly forgotSignInInfoSubmittedCredentials: Locator;
-
-  private readonly PAGE_NAME = "lookup";
+  readonly customerLookupFormErrorHeading: Locator;
+  readonly customerLookupFormErrorMessage: Locator;
+  readonly customerLookupConfirmationSubtitle: Locator;
+  readonly customerLookupConfirmationCredentials: Locator;
   readonly EXPECTED_PAGE_URL = new RegExp(getUrlPattern(this.PAGE_NAME));
-  readonly EXPECTED_FORM_SUBMITTED_ERROR_MESSAGE = "The customer information provided could not be found.";
-  readonly EXPECTED_FORM_SUBMITTED_SUCCESS = "Your login information was located successfully. You are now logged in.";
-
 
   constructor(page: Page) {
     this.page = page;
     this.mainContent = page.locator("#rightPanel");
-    this.forgotSigninInfoHeading = page.getByRole("heading", { name: "Customer Lookup" });
-    this.forgotSigninInfoSubtitle = page.getByText("Please fill out the following information in order to validate your account.");
-    
+    this.customerLookupHeading = page.getByRole("heading", { name: "Customer Lookup" });
+    this.customerLookupSubtitle = page.locator("#rightPanel > p");
+
     this.firstNameLabel = this.mainContent.getByText("First Name:");
     this.firstNameInput = page.locator('[id="firstName"]');
     this.firstNameErrorMessage = this.mainContent.getByText("First name is required.");
@@ -79,19 +76,10 @@ export class ForgotSignInInfoPage {
     this.ssnErrorMessage = this.mainContent.getByText("Social Security Number is required.");
 
     this.findInfoBtn = page.getByRole("button", { name: "Find My Login Info" });
-    this.forgotSignInInfoSubmittedSubtitle = this.mainContent.locator("> p").nth(0);
-    this.forgotSignInInfoSubmittedCredentials = this.mainContent.locator("> p").nth(1);
-    this.formSubmittedErrorHeading = this.page.getByRole("heading", { name: "Error!" });
-    this.formSubmittedErrorMessage = this.page.locator("#rightPanel > p");
-    this.validationErrorList = [
-      this.firstNameErrorMessage,
-      this.lastNameErrorMessage,
-      this.addressErrorMessage,
-      this.cityErrorMessage,
-      this.stateErrorMessage,
-      this.zipCodeErrorMessage,
-      this.ssnErrorMessage
-    ];
+    this.customerLookupConfirmationSubtitle = this.mainContent.locator("> p").nth(0);
+    this.customerLookupConfirmationCredentials = this.mainContent.locator("> p").nth(1);
+    this.customerLookupFormErrorHeading = this.page.getByRole("heading", { name: "Error!" });
+    this.customerLookupFormErrorMessage = this.page.locator("#rightPanel > p");
   }
 
   nagivate = async () => {
@@ -100,7 +88,7 @@ export class ForgotSignInInfoPage {
     await this.page.goto(currentUrl);
   };
 
-  FillForgotInfoForm = async (userData: ForgotSignInInfo) => {
+  FillForgotInfoForm = async (userData: CustomerLookup) => {
     Logger.debug(`Filling forgot info form for: ${getFullname(userData.firstName, userData.lastName)}`);
     await this.firstNameInput.fill(userData.firstName);
     await this.lastNameInput.fill(userData.lastName);
@@ -111,8 +99,60 @@ export class ForgotSignInInfoPage {
     await this.ssnInput.fill(userData.ssn);
   };
 
-  submitForgotInfoForm = async (userData?: ForgotSignInInfo) => {
-    Logger.debug(`Submitting forgot info form for username: ${getFullname(userData?.firstName || '', userData?.lastName || '')}`);
+  submitForgotInfoForm = async (userData?: CustomerLookup) => {
+    Logger.debug(`Submitting forgot info form for username: ${getFullname(userData?.firstName || "", userData?.lastName || "")}`);
     await this.findInfoBtn.click();
   };
+
+  getCustomerLookupFields = () => [
+      {
+        label: this.firstNameLabel,
+        expectedLabel: "First Name:",
+        input: this.firstNameInput,
+        requiredError: this.firstNameErrorMessage,
+        expectedRequiredError: customerLookupValidatorErrors.firstNameRequired,
+      },
+      {
+        label: this.lastNameLabel,
+        expectedLabel: "Last Name:",
+        input: this.lastNameInput,
+        requiredError: this.lastNameErrorMessage,
+        expectedRequiredError: customerLookupValidatorErrors.lastNameRequired,
+      },
+      {
+        label: this.addressLabel,
+        expectedLabel: "Address:",
+        input: this.addressInput,
+        requiredError: this.addressErrorMessage,
+        expectedRequiredError: customerLookupValidatorErrors.addressRequired,
+      },
+      {
+        label: this.cityLabel,
+        expectedLabel: "City:",
+        input: this.cityInput,
+        requiredError: this.cityErrorMessage,
+        expectedRequiredError: customerLookupValidatorErrors.cityRequired,
+      },
+      {
+        label: this.stateLabel,
+        expectedLabel: "State:",
+        input: this.stateInput,
+        requiredError: this.stateErrorMessage,
+        expectedRequiredError: customerLookupValidatorErrors.stateRequired,
+      },
+      {
+        label: this.zipCodeLabel,
+        expectedLabel: "Zip Code:",
+        input: this.zipCodeInput,
+        requiredError: this.zipCodeErrorMessage,
+        expectedRequiredError: customerLookupValidatorErrors.zipCodeRequired,
+      },
+      {
+        label: this.ssnLabel,
+        expectedLabel: "SSN:",
+        input: this.ssnInput,
+        requiredError: this.ssnErrorMessage,
+        expectedRequiredError: customerLookupValidatorErrors.ssnRequired,
+      },
+    ];
 }

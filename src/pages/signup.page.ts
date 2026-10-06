@@ -9,6 +9,7 @@ import { signupValidatorErrors } from "@test-data/signup.data";
 export class SignUpPage {
   private readonly page: Page;
   private readonly mainContent: Locator;
+  private readonly PAGE_NAME = "register";
   readonly firstNameLabel: Locator;
   readonly firstNameInput: Locator;
   readonly firstNameErrorMessage: Locator;
@@ -47,8 +48,6 @@ export class SignUpPage {
   readonly registerBtn: Locator;
   readonly userRegisteredHeading: Locator;
   readonly userRegisteredSubtitle: Locator;
-  private readonly signUpFields: SignUpField[]
-  private readonly PAGE_NAME = "register";
   readonly EXPECTED_PAGE_URL = new RegExp(getUrlPattern(this.PAGE_NAME));
 
   constructor(page: Page) {
@@ -105,83 +104,6 @@ export class SignUpPage {
     this.registerBtn = page.getByRole("button", { name: "Register" });
     this.userRegisteredHeading = page.locator("#rightPanel > h1");
     this.userRegisteredSubtitle = page.locator("#rightPanel > p");
-    this.signUpFields = [
-      {
-        label: this.firstNameLabel,
-        expectedLabel: "First Name:",
-        input: this.firstNameInput,
-        requiredError: this.firstNameErrorMessage,
-        expectedRequiredError: signupValidatorErrors.firstNameRequired,
-      },
-      {
-        label: this.lastNameLabel,
-        expectedLabel: "Last Name:",
-        input: this.lastNameInput,
-        requiredError: this.lastNameErrorMessage,
-        expectedRequiredError: signupValidatorErrors.lastNameRequired,
-      },
-      {
-        label: this.addressLabel,
-        expectedLabel: "Address:",
-        input: this.addressInput,
-        requiredError: this.addressErrorMessage,
-        expectedRequiredError: signupValidatorErrors.addressRequired,
-      },
-      {
-        label: this.cityLabel,
-        expectedLabel: "City:",
-        input: this.cityInput,
-        requiredError: this.cityErrorMessage,
-        expectedRequiredError: signupValidatorErrors.cityRequired,
-      },
-      {
-        label: this.stateLabel,
-        expectedLabel: "State:",
-        input: this.stateInput,
-        requiredError: this.stateErrorMessage,
-        expectedRequiredError: signupValidatorErrors.stateRequired,
-      },
-      {
-        label: this.zipCodeLabel,
-        expectedLabel: "Zip Code:",
-        input: this.zipCodeInput,
-        requiredError: this.zipCodeErrorMessage,
-        expectedRequiredError: signupValidatorErrors.zipCodeRequired,
-      },
-      {
-        label: this.phoneNumberLabel,
-        expectedLabel: "Phone #:",
-        input: this.phoneNumberInput
-      },
-      {
-        label: this.ssnLabel,
-        expectedLabel: "SSN:",
-        input: this.ssnInput,
-        requiredError: this.ssnErrorMessage,
-        expectedRequiredError: signupValidatorErrors.ssnRequired,
-      },
-      {
-        label: this.usernameLabel,
-        expectedLabel: "Username:",
-        input: this.usernameInput,
-        requiredError: this.usernameErrorMessage,
-        expectedRequiredError: signupValidatorErrors.usernameRequired,
-      },
-      {
-        label: this.passwordLabel,
-        expectedLabel: "Password:",
-        input: this.passwordInput,
-        requiredError: this.passwordErrorMessage,
-        expectedRequiredError: signupValidatorErrors.passwordRequired,
-      },
-      {
-        label: this.passwordConfirmationLabel,
-        expectedLabel: "Confirm:",
-        input: this.passwordConfirmationInput,
-        requiredError: this.passwordConfirmationErrorMessage,
-        expectedRequiredError: signupValidatorErrors.passwordConfirmationRequired,
-      },
-    ];
   }
 
   nagivate = async (): Promise<void> => {

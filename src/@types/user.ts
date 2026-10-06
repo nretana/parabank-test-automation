@@ -20,7 +20,7 @@ export interface UserRegistration {
     passwordConfirmation: string
 }
 
-export interface ForgotSignInInfo {
+export interface CustomerLookup {
     firstName: string
     lastName: string
     address: string

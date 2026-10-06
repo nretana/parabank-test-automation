@@ -115,13 +115,13 @@ test("Successful user logout and invalidation of the active session", { tag: ["@
 });
 
 test("Pre-login sidebar displays all required labels, inputs, and links", { tag: ["@regression"] }, async ({ page }) => {
-  const signInSideBarcomponent = new SignInSideBarComponent(page);
+  const signInSideBar = new SignInSideBarComponent(page);
   await test.step("Navigating to sign in page", async () => {
-    await signInSideBarcomponent.navigate();
+    await signInSideBar.navigate();
   });
 
   await test.step("Validating UI elements are displayed", async () => {
-    for (const elem of signInSideBarcomponent.loginSideBarElements) {
+    for (const elem of signInSideBar.loginSideBarElements) {
       await expect.soft(elem).toBeVisible();
     }
   });

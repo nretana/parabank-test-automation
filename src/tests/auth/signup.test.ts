@@ -74,5 +74,6 @@ test("Sign up page displays all required labels", { tag: ["@regression"] }, asyn
     for (const field of signUpFields) {
       await expect.soft(field.label).toHaveText(field.expectedLabel);
     }
+    await expect(signupPage.registerBtn).toBeVisible();
   });
 });
