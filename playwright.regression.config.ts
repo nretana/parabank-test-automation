@@ -17,8 +17,7 @@ export default defineConfig({
   /* Retry on CI only */
   retries: process.env.CI ? 2 : 1,
   /* Opt out of parallel tests on CI. */
-  workers: process.env.CI ? 1 : 3,
-  timeout: 60_000,
+  workers: process.env.CI ? 1 : 1,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: [["./src/utils/tag-filter-reporter.ts", { currentTag: "@regression" }],
              ['html', { outputFolder: 'src/reports/regression' }]],
@@ -38,10 +37,9 @@ export default defineConfig({
     // baseURL: 'http://localhost:3000',
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    video: "off",              // or "on-first-retry" once stable
-    trace: "on-first-retry",
-    navigationTimeout: 30_000,
-    actionTimeout: 15_000
+    video: "retain-on-failure",
+    screenshot: "only-on-failure",
+    trace: "retain-on-failure"
   },
   globalTeardown: require.resolve("./src/utils/global-teardown"),
   grep: /@regression/,

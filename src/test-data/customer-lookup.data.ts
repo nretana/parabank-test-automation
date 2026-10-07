@@ -30,7 +30,7 @@ export const customerLookup: TestData<CustomerLookup> = {
       city: "San Jose",
       state: "CA",
       zipCode: "12345",
-      ssn: "123-45-67898765",
+      ssn: "a123-45-67898765",
     },
   ],
 };
