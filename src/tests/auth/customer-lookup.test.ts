@@ -21,7 +21,7 @@ test("Successful recover of sign in info", { tag: ["@smoke", "@regression"] }, a
   });
 
   await test.step("Navigating to customer lookup page", async () => {
-    await customerLookupPage.nagivate();
+    await customerLookupPage.navigate();
   });
 
   await test.step("Filling customer lookup form", async () => {
@@ -44,7 +44,7 @@ test("Unsuccessful attempt to recover sign in info using empty form values", { t
   const customerLookupPage = new CustomerLookupPage(page);
 
   await test.step("Navigating to customer lookup page", async () => {
-    await customerLookupPage.nagivate();
+    await customerLookupPage.navigate();
   });
 
   await test.step("Filling customer lookup form", async () => {
@@ -68,7 +68,7 @@ test("Unsuccessful attempt to recover sign in info using incorrect form values",
   const customerLookupPage = new CustomerLookupPage(page);
 
   await test.step("Navigating to customer lookup page", async () => {
-    await customerLookupPage.nagivate();
+    await customerLookupPage.navigate();
   });
 
   await test.step("Filling customer lookup form", async () => {
@@ -89,7 +89,7 @@ test("Unsuccessful attempt to recover sign in info using incorrect form values",
 test("Customer lookup page displays all required labels", { tag: ["@regression"] }, async ({ page }) => {
   const customerLookupPage = new CustomerLookupPage(page);
   await test.step("Navigating to sign up page", async () => {
-    await customerLookupPage.nagivate();
+    await customerLookupPage.navigate();
   });
 
   await test.step("Validating UI elements are displayed", async () => {

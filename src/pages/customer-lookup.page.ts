@@ -82,7 +82,7 @@ export class CustomerLookupPage {
     this.customerLookupFormErrorMessage = this.page.locator("#rightPanel > p");
   }
 
-  nagivate = async () => {
+  navigate = async () => {
     const currentUrl = `${BASE_URL}/${this.PAGE_NAME}.htm`;
     Logger.debug(`Navigating to url: ${currentUrl}`);
     await this.page.goto(currentUrl);

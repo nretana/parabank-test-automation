@@ -2,28 +2,45 @@ import { Page, test as base, expect } from '@playwright/test'
 import { userCredentials, signedinConfirmation } from '@test-data/signin.data';
 import { SignInSideBarComponent } from '@pages/components/signin-sidebar.component';
 import { SignedInSideBarComponent } from '@pages/components/signedin-sidebar.component';
-import { AccountsOverviewPage } from '@pages/accounts-overview.page';
+import { AccountsOverviewPage } from '@pages/accounts/accounts-overview.page';
+import { SignUpPage } from '@pages/signup.page';
+import { userRegistration } from '@test-data/signup.data';
+import { UserRegistration } from '@@types/user';
 
-export const authTest = base.extend<{ authPage: Page }>({
-    authPage: async({ page }, use) => {
-        const currentUser = (userCredentials.valid).find(u => u.role === "member");
+interface AuthFixtures {
+    registeredUser: UserRegistration,
+    signedInPage: { page: Page, registeredUser: UserRegistration }
+}
+
+export const authTest = base.extend<AuthFixtures>({
+    registeredUser: async({ browser }, use) => {
+        const context = await browser.newContext();
+        const page = await context.newPage();
+        const signupPage = new SignUpPage(page);
+        const newUser = userRegistration.getValidUser();
+        await signupPage.navigate();
+        await signupPage.registerUser(newUser);
+        await context.close();
+        await use(newUser);
+    },
+    signedInPage: async({ page, registeredUser }, use) => {
+        /*const currentUser = (userCredentials.valid).find(u => u.role === "member");
         if(currentUser === null && currentUser){
             throw new Error(`[Auth error]: credentials not found`);
         }
 
         if(!currentUser?.username || !currentUser?.password){
             throw new Error(`[Auth error]: credentials not found`);
-        }
-
+        }*/
         const signinPage = new SignInSideBarComponent(page);
         await signinPage.navigate();
-        await signinPage.submitLogin(currentUser.username, currentUser.password);
+        await signinPage.submitLogin(registeredUser.username, registeredUser.password);
 
         const signedInComponent = new SignedInSideBarComponent(page);
         await expect(signedInComponent.welcomeText).toBeVisible();
-        await expect(signedInComponent.welcomeText).toHaveText(signedinConfirmation.greetingMessage(currentUser.firstName, currentUser.lastName));
+        await expect(signedInComponent.welcomeText).toHaveText(signedinConfirmation.greetingMessage(registeredUser.firstName, registeredUser.lastName));
         const accountsOverview = new AccountsOverviewPage(page);
         await expect(page).toHaveURL(accountsOverview.EXPECTED_PAGE_URL);
-        await use(page);
+        await use({ page, registeredUser });
     }
 })

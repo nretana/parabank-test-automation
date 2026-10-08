@@ -1,5 +1,5 @@
 import { expect } from "@playwright/test";
-import { AccountsOverviewPage } from "@pages/accounts-overview.page";
+import { AccountsOverviewPage } from "@pages/accounts/accounts-overview.page";
 import { SignedInSideBarComponent } from "@pages/components/signedin-sidebar.component";
 import { SignInSideBarComponent } from "@pages/components/signin-sidebar.component";
 import { test } from "@fixtures/merge.fixture";

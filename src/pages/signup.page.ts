@@ -106,7 +106,7 @@ export class SignUpPage {
     this.userRegisteredSubtitle = page.locator("#rightPanel > p");
   }
 
-  nagivate = async (): Promise<void> => {
+  navigate = async (): Promise<void> => {
     const currentUrl = `${BASE_URL}/${this.PAGE_NAME}.htm`;
     Logger.debug(`Navigating to url: ${currentUrl}`);
     await this.page.goto(currentUrl);
@@ -133,7 +133,7 @@ export class SignUpPage {
   };
 
   registerUser = async (userData: UserRegistration): Promise<void> => {
-    await this.nagivate();
+    await this.navigate();
     await this.FillSignUpForm(userData);
     await this.submitSignUpForm(userData);
   };

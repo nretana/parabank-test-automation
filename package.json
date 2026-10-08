@@ -9,7 +9,7 @@
     "test:ui": "playwright test --ui",
     "test:debug": "playwright test --debug",
     "test:browser": "npx playwright test --headed",
-    "test:@file": "npm run typecheck && dotenv -e .env.qa -- npx playwright test tests/auth --config=playwright.regression.config.ts",
+    "test:@file": "npm run typecheck && dotenv -e .env.local -- npx playwright test tests/auth --config=playwright.regression.config.ts",
     "test:@accessibility": "npx playwright test --config=playwright.regression.config.ts --grep @accessibility",
     "test:@security": "npx playwright test --config=playwright.regression.config.ts --grep @security",
     "test:@performance": "npx playwright test --config=playwright.regression.config.ts --grep @performance",

@@ -12,7 +12,7 @@ test("Successful sign up using valid data", { tag: ["@smoke", "@regression"] }, 
   const signupPage = new SignUpPage(page);
 
   await test.step("Navigating to sign up page", async () => {
-    await signupPage.nagivate();
+    await signupPage.navigate();
   });
 
   await test.step("Filling sign up form", async () => {
@@ -40,7 +40,7 @@ test("Unsuccessful sign up attempt with empty form values", { tag: ["@regression
   const signupPage = new SignUpPage(page);
 
   await test.step("Navigating to sign up page", async () => {
-    await signupPage.nagivate();
+    await signupPage.navigate();
   });
 
   await test.step("Filling sign up form", async () => {
@@ -64,7 +64,7 @@ test("Unsuccessful sign up attempt with empty form values", { tag: ["@regression
 test("Sign up page displays all required labels", { tag: ["@regression"] }, async ({ page }) => {
   const signupPage = new SignUpPage(page);
   await test.step("Navigating to sign up page", async () => {
-    await signupPage.nagivate();
+    await signupPage.navigate();
   });
 
   await test.step("Validating UI elements are displayed", async () => {
