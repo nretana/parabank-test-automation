@@ -24,14 +24,6 @@ export const authTest = base.extend<AuthFixtures>({
         await use(newUser);
     },
     signedInPage: async({ page, registeredUser }, use) => {
-        /*const currentUser = (userCredentials.valid).find(u => u.role === "member");
-        if(currentUser === null && currentUser){
-            throw new Error(`[Auth error]: credentials not found`);
-        }
-
-        if(!currentUser?.username || !currentUser?.password){
-            throw new Error(`[Auth error]: credentials not found`);
-        }*/
         const signinPage = new SignInSideBarComponent(page);
         await signinPage.navigate();
         await signinPage.submitLogin(registeredUser.username, registeredUser.password);

@@ -28,10 +28,10 @@ export class OpenNewAccountPage {
     this.page = page;
     this.openNewAccountHeading = page.getByRole("heading", { name: "Open New Account" });
     this.accountTypeText = page.locator("[id='openAccountForm'] p > b").nth(0);
-    this.accountTypeSelector = page.locator("[id='openAccountForm'] select").nth(0);
+    this.accountTypeSelector = page.locator("[id='type']");
 
     this.sourceAccountText = page.locator("[id='openAccountForm'] p > b").nth(1);
-    this.sourceAccountSelector = page.locator("[id='fromAccountId']").nth(1);
+    this.sourceAccountSelector = page.locator("[id='fromAccountId']");
 
     this.submitFormBtn = page.getByRole("button", { name: "Open New Account" });
     this.openNewAccountConfirmationHeading = page.locator("[id='openAccountResult'] > h1");
@@ -52,7 +52,7 @@ export class OpenNewAccountPage {
   FillOpenNewAccountForm = async (accountType: string): Promise<void> => {
     Logger.debug(`Filling open new account for account type: ${accountType}`);
     await this.accountTypeSelector.selectOption({ label: accountType });
-    await this.accountTypeSelector.selectOption({ index: 0 });
+    await this.sourceAccountSelector.selectOption({ index: 0 });
   };
 
   submitOpenNewAccountForm = async (accountType: string): Promise<void> => {

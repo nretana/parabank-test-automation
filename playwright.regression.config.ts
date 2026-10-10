@@ -1,7 +1,7 @@
 import { defineConfig, devices } from "@playwright/test";
 import dotenv from "dotenv";
 import path from "path";
-dotenv.config({ path: path.resolve(__dirname, ".env.qa") });
+//dotenv.config({ path: path.resolve(__dirname, ".env.qa") });
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -38,7 +38,7 @@ export default defineConfig({
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     video: "retain-on-failure",
-    screenshot: "only-on-failure",
+    screenshot: "on",
     trace: "retain-on-failure"
   },
   globalTeardown: require.resolve("./src/utils/global-teardown"),
