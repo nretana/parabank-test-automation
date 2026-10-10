@@ -34,9 +34,13 @@ for (const accType of accountTypes) {
 }
 
 for (const accType of accountTypes) {
-  test(
-    `Unsuccessful open a new ${accType.type} account`,
-    { tag: ["@regression"], annotation: { type: "issue", description: "https://github.com/nretana/parabank-test-automation/issues/1" } },
+  test(`Unsuccessful open a new ${accType.type} account`,
+    { tag: ["@regression"], 
+      annotation: { 
+        type: "issue", 
+        description: "https://github.com/nretana/parabank-test-automation/issues/1" 
+      } 
+    },
     async ({ signedInPage }) => {
       test.fail(true, "Issue #1: ParaBank allows opening an account from a source with less than $100");
       Logger.debug(`Opening 5 additional accounts to reduce the source account balance below $100 for username: ${signedInPage.registeredUser.username}`);

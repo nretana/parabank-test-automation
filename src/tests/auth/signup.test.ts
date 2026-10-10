@@ -35,29 +35,39 @@ test("Successful sign up using valid data", { tag: ["@smoke", "@regression"] }, 
   });
 });
 
-test("Unsuccessful sign up attempt with empty form values", { tag: ["@regression"] }, async ({ page }) => {
-  const newUser = userRegistration.invalid[0] as UserRegistration;
-  const signupPage = new SignUpPage(page);
+test("Unsuccessful sign up attempt with empty form values",
+  {
+    tag: ["@regression"],
+    annotation: {
+      type: "issue",
+      description: "https://github.com/nretana/parabank-test-automation/issues/2",
+    },
+  },
+  async ({ page }) => {
+    test.fail(true, "Issue #2 Phone number field validator displayed without an error message in sign up form");
+    const newUser = userRegistration.invalid[0] as UserRegistration;
+    const signupPage = new SignUpPage(page);
 
-  await test.step("Navigating to sign up page", async () => {
-    await signupPage.navigate();
-  });
+    await test.step("Navigating to sign up page", async () => {
+      await signupPage.navigate();
+    });
 
-  await test.step("Filling sign up form", async () => {
-    await signupPage.FillSignUpForm(newUser);
-  });
+    await test.step("Filling sign up form", async () => {
+      await signupPage.FillSignUpForm(newUser);
+    });
 
-  await test.step("Submitting sign up form", async () => {
-    await signupPage.submitSignUpForm(newUser);
-  });
+    await test.step("Submitting sign up form", async () => {
+      await signupPage.submitSignUpForm(newUser);
+    });
 
-  await test.step("Validating error messages are displayed", async () => {
-    const signUpFields = signupPage.getSignUpFields();
-    for (const field of signUpFields) {
-      await expect.soft(field.requiredError).toHaveText(field?.expectedRequiredError);
-    }
-  });
-});
+    await test.step("Validating error messages are displayed", async () => {
+      const signUpFields = signupPage.getSignUpFields();
+      for (const field of signUpFields) {
+        await expect.soft(field.requiredError).toHaveText(field?.expectedRequiredError);
+      }
+    });
+  },
+);
 
 test("Sign up page displays all required labels", { tag: ["@regression"] }, async ({ page }) => {
   const signupPage = new SignUpPage(page);
