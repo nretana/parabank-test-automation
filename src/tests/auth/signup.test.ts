@@ -4,7 +4,7 @@ import { userRegistration, signupForm, signupConfirmation } from "@test-data/sig
 import { UserRegistration } from "@@types/user";
 import { SignedInSideBarComponent } from "@pages/components/signedin-sidebar.component";
 import { expect } from "@playwright/test";
-import { Logger } from '@utils/logger';
+import { Logger } from "@utils/logger";
 
 test("Successful sign up using valid data", { tag: ["@smoke", "@regression"] }, async ({ page }) => {
   const newUser = userRegistration.getValidUser() as UserRegistration;
@@ -54,9 +54,7 @@ test("Unsuccessful sign up attempt with empty form values", { tag: ["@regression
   await test.step("Validating error messages are displayed", async () => {
     const signUpFields = signupPage.getSignUpFields();
     for (const field of signUpFields) {
-      if (field.requiredError && field.expectedRequiredError) {
-        await expect.soft(field.requiredError).toHaveText(field?.expectedRequiredError);
-      }
+      await expect.soft(field.requiredError).toHaveText(field?.expectedRequiredError);
     }
   });
 });
@@ -70,7 +68,7 @@ test("Sign up page displays all required labels", { tag: ["@regression"] }, asyn
   await test.step("Validating UI elements are displayed", async () => {
     const signUpFields = signupPage.getSignUpFields();
     await expect(signupPage.signupHeading).toHaveText(signupForm.header);
-    await expect(signupPage.signupSubTitle).toHaveText(signupForm.message); 
+    await expect(signupPage.signupSubTitle).toHaveText(signupForm.message);
     for (const field of signUpFields) {
       await expect.soft(field.label).toHaveText(field.expectedLabel);
     }

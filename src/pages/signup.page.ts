@@ -30,7 +30,7 @@ export class SignUpPage {
   readonly zipCodeErrorMessage: Locator;
   readonly phoneNumberLabel: Locator;
   readonly phoneNumberInput: Locator;
-  //readonly phoneNumberErrorMessage: Locator;
+  readonly phoneNumberErrorMessage: Locator;
   readonly ssnLabel: Locator;
   readonly ssnInput: Locator;
   readonly ssnErrorMessage: Locator;
@@ -82,8 +82,7 @@ export class SignUpPage {
 
     this.phoneNumberLabel = page.getByText("Phone #:");
     this.phoneNumberInput = page.locator('[id="customer.phoneNumber"]');
-    //TODO: phone number error message not present in sign up form
-    //this.phoneNumberErrorMessage = page.getByText('Phone number name is required.');
+    this.phoneNumberErrorMessage = page.getByText('[id="customer.phoneNumber.errors"]');
 
     this.ssnLabel = page.getByText("SSN:");
     this.ssnInput = page.locator('[id="customer.ssn"]');
@@ -184,7 +183,9 @@ export class SignUpPage {
       {
         label: this.phoneNumberLabel,
         expectedLabel: "Phone #:",
-        input: this.phoneNumberInput
+        input: this.phoneNumberInput,
+        requiredError: this.phoneNumberErrorMessage,
+        expectedRequiredError: signupValidatorErrors.phoneNumber,
       },
       {
         label: this.ssnLabel,

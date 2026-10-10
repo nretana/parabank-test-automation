@@ -40,6 +40,7 @@ export const signupValidatorErrors = {
   cityRequired: "City is required.",
   stateRequired: "State is required.",
   zipCodeRequired: "Zip Code is required.",
+  phoneNumber: "Phone number is required.",
   ssnRequired: "Social Security Number is required.",
   usernameRequired: "Username is required.",
   passwordRequired: "Password is required.",
