@@ -1,9 +1,9 @@
 import { Page, test as base, expect } from '@playwright/test'
 import { userCredentials, signedinConfirmation } from '@test-data/signin.data';
-import { SignInSideBarComponent } from '@pages/components/signin-sidebar.component';
-import { SignedInSideBarComponent } from '@pages/components/signedin-sidebar.component';
+import { SignInSideBarComponent } from '@pages/auth/components/signin-sidebar.component';
+import { SignedInSideBarComponent } from '@pages/auth/components/signedin-sidebar.component';
 import { AccountsOverviewPage } from '@pages/accounts/accounts-overview.page';
-import { SignUpPage } from '@pages/signup.page';
+import { SignUpPage } from '@pages/auth/signup.page';
 import { userRegistration } from '@test-data/signup.data';
 import { UserRegistration } from '@@types/user';
 

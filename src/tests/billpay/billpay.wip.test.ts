@@ -1,5 +1,5 @@
 import { test } from "@fixtures/merge.fixture";
-import { BillPayPage } from "@pages/billpay.page";
+import { BillPayPage } from "@pages/billpay/billpay.page";
 import { billPay } from "@test-data/billpay.data";
 import { expect } from "@playwright/test";
 

@@ -1,8 +1,8 @@
-import { SignUpPage } from "@pages/signup.page";
+import { SignUpPage } from "@pages/auth/signup.page";
 import { test } from "@fixtures/merge.fixture";
 import { userRegistration, signupForm, signupConfirmation } from "@test-data/signup.data";
 import { UserRegistration } from "@@types/user";
-import { SignedInSideBarComponent } from "@pages/components/signedin-sidebar.component";
+import { SignedInSideBarComponent } from "@pages/auth/components/signedin-sidebar.component";
 import { expect } from "@playwright/test";
 import { Logger } from "@utils/logger";
 

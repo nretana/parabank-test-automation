@@ -1,13 +1,13 @@
 import { expect } from "@playwright/test";
 import { AccountsOverviewPage } from "@pages/accounts/accounts-overview.page";
-import { SignedInSideBarComponent } from "@pages/components/signedin-sidebar.component";
-import { SignInSideBarComponent } from "@pages/components/signin-sidebar.component";
+import { SignedInSideBarComponent } from "@pages/auth/components/signedin-sidebar.component";
+import { SignInSideBarComponent } from "@pages/auth/components/signin-sidebar.component";
 import { test } from "@fixtures/merge.fixture";
 import { userCredentials, signinErrors, signedinConfirmation } from "@test-data/signin.data";
 import { userRegistration } from '@test-data/signup.data';
 import type { UserRegistration } from '@@types/user';
 
-import { SignUpPage } from '@pages/signup.page';
+import { SignUpPage } from '@pages/auth/signup.page';
 
 test("Successful sign in using valid credentials", { tag: ["@smoke", "@regression"] }, async ({ page }) => {
   const newUser = userRegistration.getValidUser() as UserRegistration;

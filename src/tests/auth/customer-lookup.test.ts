@@ -1,12 +1,12 @@
-import { CustomerLookupPage } from "@pages/customer-lookup.page";
+import { CustomerLookupPage } from "@pages/auth/customer-lookup.page";
 import { test } from "@fixtures/merge.fixture";
 import { customerLookup, customerLookupConfirmation, customerLookupForm, customerLookupError } from "@test-data/customer-lookup.data";
 import { userRegistration } from '@test-data/signup.data';
 import type { UserRegistration } from "@@types/user";
 import { expect } from "@playwright/test";
-import { SignUpPage } from '@pages/signup.page';
-import { SignedInSideBarComponent } from '@pages/components/signedin-sidebar.component';
-import { SignInSideBarComponent } from '@pages/components/signin-sidebar.component';
+import { SignUpPage } from '@pages/auth/signup.page';
+import { SignedInSideBarComponent } from '@pages/auth/components/signedin-sidebar.component';
+import { SignInSideBarComponent } from '@pages/auth/components/signin-sidebar.component';
 
 test("Successful recover of sign in info", { tag: ["@smoke", "@regression"] }, async ({ page }) => {
   const newUser = userRegistration.getValidUser() as UserRegistration;
