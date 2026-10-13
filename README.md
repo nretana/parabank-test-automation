@@ -64,8 +64,8 @@ An end-to-end (E2E) automated testing framework built for the [Parabank Online B
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/nretana/parabank-playwright-automation.git
-   cd parabank-playwright-automation
+   git clone https://github.com/nretana/parabank-test-automation.git
+   cd parabank-test-automation
    ```
 
 2. **Install dependencies:**
