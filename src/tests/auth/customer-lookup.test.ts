@@ -8,7 +8,25 @@ import { SignUpPage } from '@pages/auth/signup.page';
 import { SignedInSideBarComponent } from '@pages/auth/components/signedin-sidebar.component';
 import { SignInSideBarComponent } from '@pages/auth/components/signin-sidebar.component';
 
-test("Successful recover of sign in info", { tag: ["@smoke", "@regression"] }, async ({ page }) => {
+
+test("TC-AUTH-CLOOKUP-001: Customer lookup page displays the expected labels and inputs", { tag: ["@regression"] }, async ({ page }) => {
+  const customerLookupPage = new CustomerLookupPage(page);
+  await test.step("Navigating to sign up page", async () => {
+    await customerLookupPage.navigate();
+  });
+
+  await test.step("Validating UI elements are displayed", async () => {
+    const customerLookupFields = customerLookupPage.getCustomerLookupFields();
+    await expect(customerLookupPage.customerLookupHeading).toHaveText(customerLookupForm.header);
+    await expect(customerLookupPage.customerLookupSubtitle).toHaveText(customerLookupForm.message); 
+    for (const field of customerLookupFields) {
+      await expect.soft(field.label).toHaveText(field.expectedLabel);
+    }
+    await expect(customerLookupPage.findInfoBtn).toBeVisible();
+  });
+});
+
+test("TC-AUTH-CLOOKUP-002: Successful recover of sign in info", { tag: ["@smoke", "@regression"] }, async ({ page }) => {
   const newUser = userRegistration.getValidUser() as UserRegistration;
   const customerLookupPage = new CustomerLookupPage(page);
   const signupPage =  new SignUpPage(page);
@@ -39,7 +57,7 @@ test("Successful recover of sign in info", { tag: ["@smoke", "@regression"] }, a
   });
 });
 
-test("Unsuccessful attempt to recover sign in info using empty form values", { tag: ["@regression"] }, async ({ page }) => {
+test("TC-AUTH-CLOOKUP-003: Unsuccessful attempt to recover sign in info using empty form values", { tag: ["@regression"] }, async ({ page }) => {
   const newUser = customerLookup.invalid[0] as UserRegistration;
   const customerLookupPage = new CustomerLookupPage(page);
 
@@ -63,7 +81,7 @@ test("Unsuccessful attempt to recover sign in info using empty form values", { t
   });
 });
 
-test("Unsuccessful attempt to recover sign in info using incorrect form values", { tag: ["@regression"] }, async ({ page }) => {
+test("TC-AUTH-CLOOKUP-004: Unsuccessful attempt to recover sign in info using incorrect form values", { tag: ["@regression"] }, async ({ page }) => {
   const newUser = customerLookup.invalid[1] as UserRegistration;
   const customerLookupPage = new CustomerLookupPage(page);
 
@@ -82,23 +100,5 @@ test("Unsuccessful attempt to recover sign in info using incorrect form values",
   await test.step("Validating error message is displayed", async () => {
     await expect(customerLookupPage.customerLookupFormErrorHeading).toHaveText(customerLookupError.header);
     await expect(customerLookupPage.customerLookupFormErrorMessage).toHaveText(customerLookupError.message);
-  });
-});
-
-
-test("Customer lookup page displays all required labels", { tag: ["@regression"] }, async ({ page }) => {
-  const customerLookupPage = new CustomerLookupPage(page);
-  await test.step("Navigating to sign up page", async () => {
-    await customerLookupPage.navigate();
-  });
-
-  await test.step("Validating UI elements are displayed", async () => {
-    const customerLookupFields = customerLookupPage.getCustomerLookupFields();
-    await expect(customerLookupPage.customerLookupHeading).toHaveText(customerLookupForm.header);
-    await expect(customerLookupPage.customerLookupSubtitle).toHaveText(customerLookupForm.message); 
-    for (const field of customerLookupFields) {
-      await expect.soft(field.label).toHaveText(field.expectedLabel);
-    }
-    await expect(customerLookupPage.findInfoBtn).toBeVisible();
   });
 });
