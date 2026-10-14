@@ -11,9 +11,10 @@ An end-to-end (E2E) automated testing framework built for the [Parabank Online B
 * **Language:** TypeScript
 * **Test Runner:** [Playwright Test](https://playwright.dev/)
 * **Design Pattern:** Page Object Model (POM) and Fixtures
-* **Authentication Strategy:** Storage State (Session Reuse)
 * **Reporting:** Playwright HTML Reporter & Trace Viewer
-<!-- * **CI/CD:** GitHub Actions -->
+* **CI/CD:** GitHub Actions
+
+<!-- * **Authentication Strategy:** Storage State (Session Reuse) -->
 
 ---
 
@@ -24,21 +25,32 @@ An end-to-end (E2E) automated testing framework built for the [Parabank Online B
 │   └── workflows/
 │       └── playwright.yml         # CI/CD Pipeline
 ├── src/
-│   ├── components/                # Modular UI Components (Header, Sidebar, Navigation)
-│   │   ├── header.component.ts
-│   │   └── footer.component.ts
+│   ├── @types/
+│   ├── constants/
 │   ├── pages/                     # Full Page Objects (Transfer, Accounts Overview)
-│   │   ├── account-overview.page.ts
-│   │   └── default.page.ts
+│   │   ├── accounts/
+│   │   ├── auth/
+│   │   │   ├── components/
+│   │   │   ├── customer-lookup.page.ts
+│   │   │   └── signup.page.ts
+│   │   ├── billpay/
+│   │   ├── transfers/
+│   │   ├── layout/
+│   │   │   └── components/        # Modular UI Components (Header, Footer)
+│   │   │       ├── header.component.ts
+│   │   │       └── footer.component.ts
+│   │   └── home.page.ts
 │   ├── fixtures/                  # Custom Playwright Fixtures
 │   │   └── auth.fixture.ts
 │   ├── utils/                     # Test Helpers & Data Generators
 │   │   └── data-helpers.ts
-│   └── test-data/                 # Mock & Test Datasets
-├── tests/                         # E2E Test Suites
-│   ├── auth/                      # Login & Registration Tests
-│   ├── transfers/                 # Transfers, Bill Pay & Account Management
-│   └── layout/                    # Global Component Tests (Header, Footer, Sidebar)
+│   ├── test-data/                 # Mock & Test Datasets
+│   └── tests/                     # E2E Test Suites
+│       ├── accounts/              # Account Management Tests
+│       ├── auth/                  # Login & Registration Tests
+│       ├── billpay/               # Bill Pay
+│       ├── transfers/             # Transfers
+│       └── layout/                # Global Component Tests (Header, Footer, Sidebar)
 ├── playwright.config.ts           # Global Playwright Configuration
 └── package.json
 ```
@@ -48,17 +60,18 @@ An end-to-end (E2E) automated testing framework built for the [Parabank Online B
 ## 🔑 Key Architecture Highlights
 
 * **Component Object Model:** Separates global persistent UI elements (Header, LoggedIn Sidebar, Login Sidebar) from page-specific views to eliminate code duplication.
-* **Session Storage Authentication:** Reuses authenticated state (`storageState`) across tests to bypass UI login steps for faster execution.
 * **Custom Fixtures:** Injects pre-instantiated page and component objects into tests dynamically, keeping spec files clean and focused on test logic.
-* **Strict Locators:** Uses user-centric accessibility locators (`getByRole`, `getByLabel`, `getByTestId`) for resilient, auto-waiting test scripts.
+* **Resilient Locators:** Prioritizes user-centric accessibility locators (getByRole, getByLabel, getByTestId) where available, while pragmatically combining them with robust CSS selectors and custom attributes to handle legacy DOM structures smoothly.
+
+<!-- * **Session Storage Authentication:** Reuses authenticated state (`storageState`) across tests to bypass UI login steps for faster execution.-->
 
 ---
 
 ## 🚀 Getting Started
 
 ### Prerequisites
-* **Node.js**: v18+ 
-* **npm**: v9+
+* **Node.js**: v22+ 
+* **npm**: v11+
 
 ### Installation
 
@@ -88,7 +101,7 @@ An end-to-end (E2E) automated testing framework built for the [Parabank Online B
 | `npm run test:ui` | Open interactive Playwright UI Mode |
 | `npm run test:browser` | Run tests in visible browser mode |
 | `npm run test:[@smoke\|@regression]` | Run a specific test type |
-| `npm run test:report` | Open the HTML test execution report |
+| `npm run report:[@smoke\|@regression]` | Open the HTML test execution report |
 
 ---
 
@@ -96,20 +109,18 @@ An end-to-end (E2E) automated testing framework built for the [Parabank Online B
 
 ### 🟡 In Progress / Active Development
 - [x] Framework architecture & Playwright configuration
-- [x] Component Object Model setup (`Header`, `Footer`, `LoginSidebar`, `LoggedInSidebar`)
-- [x] Custom fixtures implementation (`test.fixture.ts`)
-- [ ] User authentication & registration flows
+- [x] Component Object Model setup (`Header`, `Footer`, `SignInSidebar`, `SignedInSidebar`)
+- [x] Custom fixtures implementation (`auth.fixture.ts`)
+- [x] User authentication & registration flows
 - [ ] Account management tests (Open Account, Balances)
+- [x] Cross-browser test suite validation (Chromium, Firefox, WebKit)
+- [x] GitHub Actions CI/CD pipeline integration
 
 ### 🔮 Planned Features
 - [ ] Financial transactions (Fund Transfer, Bill Pay)
-- [ ] GitHub Actions CI/CD pipeline integration
-- [ ] Cross-browser test suite validation (Chromium, Firefox, WebKit)
 
 ---
 
-<!--
-## 📈 CI/CD Pipeline
+<!-- ## 📈 CI/CD Pipeline
 
-This repository includes a **GitHub Actions** workflow (`.github/workflows/playwright.yml`) that triggers on every `push` and `pull_request` to `main`. It automatically executes the test suite across multiple browser engines and uploads Playwright HTML reports as pipeline artifacts.
--->
+This repository includes **GitHub Actions** workflows (`.github/workflows/regression.yml, .github/workflows/smoke.yml`) that triggers on every `push` and `pull_request` to `main`. It automatically executes the test suite across multiple browser engines and uploads Playwright HTML reports as pipeline artifacts. -->
