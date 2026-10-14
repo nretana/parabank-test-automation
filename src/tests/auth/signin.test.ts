@@ -9,7 +9,20 @@ import type { UserRegistration } from '@@types/user';
 
 import { SignUpPage } from '@pages/auth/signup.page';
 
-test("Successful sign in using valid credentials", { tag: ["@smoke", "@regression"] }, async ({ page }) => {
+test("TC-AUTH-SIGNIN-001: Pre-login sidebar displays the expected labels, inputs, and links", { tag: ["@regression"] }, async ({ page }) => {
+  const signInSideBar = new SignInSideBarComponent(page);
+  await test.step("Navigating to sign in page", async () => {
+    await signInSideBar.navigate();
+  });
+
+  await test.step("Validating UI elements are displayed", async () => {
+    for (const elem of signInSideBar.loginSideBarElements) {
+      await expect.soft(elem).toBeVisible();
+    }
+  });
+});
+
+test("TC-AUTH-SIGNIN-002: Valid credentials sign in and display accounts overview page and the customer greeting", { tag: ["@smoke", "@regression"] }, async ({ page }) => {
   const newUser = userRegistration.getValidUser() as UserRegistration;
   const signInSideBar = new SignInSideBarComponent(page);
   const signedInSideBar = new SignedInSideBarComponent(page);
@@ -39,7 +52,7 @@ test("Successful sign in using valid credentials", { tag: ["@smoke", "@regressio
   });
 });
 
-test("Unsuccessful sign in attempt with invalid username or password", { tag: ["@regression"] }, async ({ page }) => {
+test("TC-AUTH-SIGNIN-003: Unsuccessful sign in with invalid username or password", { tag: ["@regression"] }, async ({ page }) => {
   const { username, password } = userCredentials.invalid[0];
   const signInSideBarcomponent = new SignInSideBarComponent(page);
   await test.step("Navigating to sign in page", async () => {
@@ -58,7 +71,7 @@ test("Unsuccessful sign in attempt with invalid username or password", { tag: ["
   });
 });
 
-test("Unsuccessful sign in attempt with empty username or password", { tag: ["@regression"] }, async ({ page }) => {
+test("TC-AUTH-SIGNIN-004: Unsuccessful sign in attempt with empty username or password", { tag: ["@regression"] }, async ({ page }) => {
   const signInSideBarcomponent = new SignInSideBarComponent(page);
   await test.step("Navigating to sign in page", async () => {
     await signInSideBarcomponent.navigate();
@@ -76,7 +89,7 @@ test("Unsuccessful sign in attempt with empty username or password", { tag: ["@r
   });
 });
 
-test("Redirection attempt to secure pages without active session authentication", { tag: ["@security", "@smoke", "@regression"] }, async ({ page }) => {
+test("TC-AUTH-SIGNIN-005: Unauthenticated users cannot access protected pages", { tag: ["@security", "@smoke", "@regression"] }, async ({ page }) => {
   const overviewPage = new AccountsOverviewPage(page);
   await test.step("Navigating to overview page", async () => {
     await overviewPage.navigate();
@@ -90,7 +103,7 @@ test("Redirection attempt to secure pages without active session authentication"
   });
 });
 
-test("Successful user logout and invalidation of the active session", { tag: ["@security", "@smoke", "@regression"] }, async ({ page }) => {
+test("TC-AUTH-SIGNIN-006: Successful user logout and invalidation of the active session", { tag: ["@security", "@smoke", "@regression"] }, async ({ page }) => {
   const { username, password } = userCredentials.valid[0];
   const signInSideBarcomponent = new SignInSideBarComponent(page);
   await test.step("Navigating to sign in page", async () => {
@@ -109,19 +122,6 @@ test("Successful user logout and invalidation of the active session", { tag: ["@
   await test.step("Validating user has signed out", async () => {
     await expect(page).toHaveURL(signInSideBarcomponent.EXPECTED_PAGE_URL);
     for (const elem of signInSideBarcomponent.loginSideBarElements) {
-      await expect.soft(elem).toBeVisible();
-    }
-  });
-});
-
-test("Pre-login sidebar displays all required labels, inputs, and links", { tag: ["@regression"] }, async ({ page }) => {
-  const signInSideBar = new SignInSideBarComponent(page);
-  await test.step("Navigating to sign in page", async () => {
-    await signInSideBar.navigate();
-  });
-
-  await test.step("Validating UI elements are displayed", async () => {
-    for (const elem of signInSideBar.loginSideBarElements) {
       await expect.soft(elem).toBeVisible();
     }
   });

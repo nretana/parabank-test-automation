@@ -2,7 +2,7 @@ import { Locator, Page } from '@playwright/test'
 import { BASE_URL } from '@constants/base.constant';
 import { getUrlPattern } from '@utils/get-url-pattern';
 
-export class DefaultPage {
+export class HomePage {
 
     private readonly page: Page;
     readonly errorHeading: Locator;
