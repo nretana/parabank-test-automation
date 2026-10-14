@@ -6,7 +6,25 @@ import { SignedInSideBarComponent } from "@pages/auth/components/signedin-sideba
 import { expect } from "@playwright/test";
 import { Logger } from "@utils/logger";
 
-test("Successful sign up using valid data", { tag: ["@smoke", "@regression"] }, async ({ page }) => {
+
+test("TC-AUTH-SIGNIN-001: Sign up page displays the expected labels and inputs", { tag: ["@regression"] }, async ({ page }) => {
+  const signupPage = new SignUpPage(page);
+  await test.step("Navigating to sign up page", async () => {
+    await signupPage.navigate();
+  });
+
+  await test.step("Validating UI elements are displayed", async () => {
+    const signUpFields = signupPage.getSignUpFields();
+    await expect(signupPage.signupHeading).toHaveText(signupForm.header);
+    await expect(signupPage.signupSubTitle).toHaveText(signupForm.message);
+    for (const field of signUpFields) {
+      await expect.soft(field.label).toHaveText(field.expectedLabel);
+    }
+    await expect(signupPage.registerBtn).toBeVisible();
+  });
+});
+
+test("TC-AUTH-SIGNIN-002: Successful sign up using valid data", { tag: ["@smoke", "@regression"] }, async ({ page }) => {
   const newUser = userRegistration.getValidUser() as UserRegistration;
   Logger.debug(`New User - ${newUser.username}`);
   const signupPage = new SignUpPage(page);
@@ -35,7 +53,7 @@ test("Successful sign up using valid data", { tag: ["@smoke", "@regression"] }, 
   });
 });
 
-test("Unsuccessful sign up attempt with empty form values",
+test("TC-AUTH-SIGNIN-003: Unsuccessful sign up attempt with empty form values",
   {
     tag: ["@regression"],
     annotation: {
@@ -68,20 +86,3 @@ test("Unsuccessful sign up attempt with empty form values",
     });
   },
 );
-
-test("Sign up page displays all required labels", { tag: ["@regression"] }, async ({ page }) => {
-  const signupPage = new SignUpPage(page);
-  await test.step("Navigating to sign up page", async () => {
-    await signupPage.navigate();
-  });
-
-  await test.step("Validating UI elements are displayed", async () => {
-    const signUpFields = signupPage.getSignUpFields();
-    await expect(signupPage.signupHeading).toHaveText(signupForm.header);
-    await expect(signupPage.signupSubTitle).toHaveText(signupForm.message);
-    for (const field of signUpFields) {
-      await expect.soft(field.label).toHaveText(field.expectedLabel);
-    }
-    await expect(signupPage.registerBtn).toBeVisible();
-  });
-});
