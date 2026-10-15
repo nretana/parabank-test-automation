@@ -4,8 +4,11 @@ import { Logger } from "@utils/logger";
 import { accountTypes, openNewAccountConfirmation, openNewAccountError } from "@test-data/open-new-account.data";
 import { OpenNewAccountPage } from "@pages/accounts/open-new-account.page";
 
-for (const accType of accountTypes) {
-  test(`Successful open new ${accType.type} account`, { tag: ["@smoke", "@regression"] }, async ({ signedInPage }) => {
+[
+  { testId: "TC-ACC-OPEN-001", title: "Successful open new checking account", ...accountTypes.checking },
+  { testId: "TC-ACC-OPEN-002", title: "Successful open new savings account", ...accountTypes.savings },
+].forEach(({ testId, title, expectedLabel }) => {
+  test(`${testId}: ${title}`, { tag: ["@smoke", "@regression"] }, async ({ signedInPage }) => {
     Logger.debug(`Open new account for username - ${signedInPage.registeredUser.username}`);
     const openNewAccountPage = new OpenNewAccountPage(signedInPage.page);
     await test.step("Navigating to open new account page", async () => {
@@ -13,11 +16,11 @@ for (const accType of accountTypes) {
     });
 
     await test.step("Filling open new account form", async () => {
-      await openNewAccountPage.FillOpenNewAccountForm(accType.expectedLabel);
+      await openNewAccountPage.FillOpenNewAccountForm(expectedLabel);
     });
 
     await test.step("Submitting open new account form", async () => {
-      await openNewAccountPage.openNewAccount(accType.expectedLabel);
+      await openNewAccountPage.openNewAccount(expectedLabel);
     });
 
     await test.step("Validating new account has been opened", async () => {
@@ -31,15 +34,19 @@ for (const accType of accountTypes) {
       await expect(openNewAccountPage.openNewAccountConfirmationNumberLink).toHaveAttribute("href", `activity.htm?id=${accounNumber}`);
     });
   });
-}
+});
 
-for (const accType of accountTypes) {
-  test(`Unsuccessful open a new ${accType.type} account`,
-    { tag: ["@regression"], 
-      annotation: { 
-        type: "issue", 
-        description: "https://github.com/nretana/parabank-test-automation/issues/1" 
-      } 
+[
+  { testId: "TC-ACC-OPEN-003", title: "Unsuccessful open a new checking account", ...accountTypes.checking },
+  { testId: "TC-ACC-OPEN-004", title: "Unsuccessful open a new savings account", ...accountTypes.savings },
+].forEach(({ testId, title, type, expectedLabel }) => {
+  test(`${testId}: ${title}`,
+    {
+      tag: ["@regression"],
+      annotation: {
+        type: "issue",
+        description: "https://github.com/nretana/parabank-test-automation/issues/1",
+      },
     },
     async ({ signedInPage }) => {
       test.fail(true, "Issue #1: ParaBank allows opening an account from a source with less than $100");
@@ -49,7 +56,7 @@ for (const accType of accountTypes) {
         for (let i = 1; i <= 5; i++) {
           Logger.debug(`open account #${i} for username: ${signedInPage.registeredUser.username}`);
           await test.step("Opening a new account ", async () => {
-            await openNewAccountPage.openNewAccount(accType.expectedLabel);
+            await openNewAccountPage.openNewAccount(expectedLabel);
             await expect(openNewAccountPage.openNewAccountConfirmationHeading).toBeVisible();
           });
         }
@@ -61,11 +68,11 @@ for (const accType of accountTypes) {
       });
 
       await test.step("Filling open new account form", async () => {
-        await openNewAccountPage.FillOpenNewAccountForm(accType.expectedLabel);
+        await openNewAccountPage.FillOpenNewAccountForm(expectedLabel);
       });
 
       await test.step("Submitting open new account form", async () => {
-        await openNewAccountPage.submitOpenNewAccountForm(accType.type);
+        await openNewAccountPage.submitOpenNewAccountForm(type);
       });
 
       await test.step("Validating error message is displayed", async () => {
@@ -74,4 +81,4 @@ for (const accType of accountTypes) {
       });
     },
   );
-}
+});

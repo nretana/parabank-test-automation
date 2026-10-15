@@ -1,8 +1,13 @@
-
-export const accountTypes = [
-  { type: "checking", expectedLabel: "CHECKING" },
-  { type: "savings", expectedLabel: "SAVINGS" },
-];
+export const accountTypes = {
+  checking: {
+    type: "checking",
+    expectedLabel: "CHECKING",
+  },
+  savings: {
+    type: "savings",
+    expectedLabel: "SAVINGS",
+  },
+};
 
 export const openNewAccountError = {
   header: "Error!",
