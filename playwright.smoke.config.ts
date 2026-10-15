@@ -31,44 +31,32 @@ export default defineConfig({
     screenshot: "only-on-failure",
     trace: "retain-on-failure"
   },
-  globalTeardown: require.resolve("./src/utils/global-teardown"),
+  //globalTeardown: require.resolve("./src/utils/global-teardown"),
   grep: /@smoke/,
   testIgnore: '**/*.wip.test.ts',
   /* Configure projects for major browsers */
   projects: [
     {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      name: "cleanup db",
+      testDir: "./src/config",
+      testMatch: /global\.teardown\.ts/
+    },
+    {
+      name: "chromium",
+      use: { ...devices["Desktop Chrome"] },
+      teardown: "cleanup db"
     },
 
     {
-      name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
+      name: "firefox",
+      use: { ...devices["Desktop Firefox"] },
+      teardown: "cleanup db"
     },
-
     {
-      name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
+      name: "webkit",
+      use: { ...devices["Desktop Safari"] },
+      teardown: "cleanup db"
     },
-    /* Test against mobile viewports. */
-    // {
-    //   name: 'Mobile Chrome',
-    //   use: { ...devices['Pixel 5'] },
-    // },
-    // {
-    //   name: 'Mobile Safari',
-    //   use: { ...devices['iPhone 12'] },
-    // },
-
-    /* Test against branded browsers. */
-    // {
-    //   name: 'Microsoft Edge',
-    //   use: { ...devices['Desktop Edge'], channel: 'msedge' },
-    // },
-    // {
-    //   name: 'Google Chrome',
-    //   use: { ...devices['Desktop Chrome'], channel: 'chrome' },
-    // },
   ],
 
   /* Run your local dev server before starting the tests */

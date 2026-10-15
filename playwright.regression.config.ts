@@ -41,24 +41,30 @@ export default defineConfig({
     screenshot: "on",
     trace: "retain-on-failure"
   },
-  globalTeardown: require.resolve("./src/utils/global-teardown"),
   grep: /@regression/,
   testIgnore: "**/*.wip.test.ts",
   /* Configure projects for major browsers */
   projects: [
     {
+      name: "cleanup db",
+      testDir: "./src/config",
+      testMatch: /global\.teardown\.ts/
+    },
+    {
       name: "chromium",
       use: { ...devices["Desktop Chrome"] },
+      teardown: "cleanup db"
     },
 
     {
       name: "firefox",
       use: { ...devices["Desktop Firefox"] },
+      teardown: "cleanup db"
     },
-
     {
       name: "webkit",
       use: { ...devices["Desktop Safari"] },
+      teardown: "cleanup db"
     },
   ],
 
