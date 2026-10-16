@@ -1,21 +1,20 @@
-import { Locator, Page } from '@playwright/test'
-import { BASE_URL } from '@constants/base.constant';
-import { getUrlPattern } from '@utils/get-url-pattern';
+import { Page } from "@playwright/test";
+import { BASE_URL } from "@constants/base.constant";
+import { getUrlPattern } from "@utils/get-url-pattern";
+import { Logger } from '@utils/logger';
 
 export class HomePage {
+  private readonly page: Page;
+  private readonly PAGE_NAME = "index";
+  readonly EXPECTED_PAGE_URL = new RegExp(getUrlPattern(this.PAGE_NAME));
 
-    private readonly page: Page;
-    readonly errorHeading: Locator;
-    readonly errorMessage: Locator;
-    private readonly PAGE_NAME = "index";
-    readonly EXPECTED_PAGE_URL = new RegExp(getUrlPattern(this.PAGE_NAME));
-    constructor(page: Page){
-        this.page = page;
-        this.errorHeading = this.page.getByRole("heading", { name: "Error!" });
-        this.errorMessage = this.page.locator("#rightPanel > p"); 
-    }
+  constructor(page: Page) {
+    this.page = page;
+  }
 
-    navigate = async(): Promise<void> => {
-        await this.page.goto(`${BASE_URL}/${this.PAGE_NAME}.htm`)
-    }
+  navigate = async (): Promise<void> => {
+    const currentUrl = `${BASE_URL}/${this.PAGE_NAME}.htm`;
+    Logger.debug(`Navigating to url: ${currentUrl}`);
+    await this.page.goto(`${BASE_URL}/${this.PAGE_NAME}.htm`);
+  };
 }
