@@ -1,10 +1,5 @@
-name: Playwright Tests
-on:
-  # workflow_dispatch:
-  # push:
-  #   branches: [ main ]
-  # pull_request:
-  #   branches: [ main ]
+name: Smoke Tests
+on: {}
 jobs:
   run-tests:
     runs-on: ubuntu-latest
