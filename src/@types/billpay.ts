@@ -5,8 +5,7 @@ export interface BillPayFormEntry {
   state: string;
   zipCode: string;
   phone: string;
-  accountNumber: number;
-  verifyAccountNumber: number;
-  amount: number;
-  fromAccountNumber: number
+  accountNumber:  string;
+  verifyAccountNumber: string;
+  amount: number | string
 }

@@ -3,7 +3,7 @@ import { getUrlPattern } from "@utils/get-url-pattern";
 import { BASE_URL } from "@constants/base.constant";
 import { Logger } from "@utils/logger";
 import { BillPayFormEntry } from "@@types/billpay";
-import { billPayValidationErrors } from "@test-data/billpay.data";
+import { billPayLabels, billPayValidationErrors } from "@test-data/billpay.data";
 
 export class BillPayPage {
   readonly page: Page;
@@ -37,15 +37,19 @@ export class BillPayPage {
 
   readonly accountNumberLabel: Locator;
   readonly accountNumberInput: Locator;
-  readonly accountNumberErrorMessage: Locator;
+  readonly accountNumberRequiredErrorMessage: Locator;
+  readonly accountNumberInvalidErrorMessage: Locator;
 
   readonly verifyAccountNumberLabel: Locator;
   readonly verifyAccountNumberInput: Locator;
-  readonly verifyAccountNumberErrorMessage: Locator;
+  readonly verifyAccountNumberRequiredErrorMessage: Locator;
+  readonly verifyAccountNumberInvalidErrorMessage: Locator;
+  readonly verifyAccountNumberMismatchErrorMessage: Locator;
 
   readonly amountLabel: Locator;
   readonly amountInput: Locator;
-  readonly amountErrorMessage: Locator;
+  readonly amountRequiredErrorMessage: Locator;
+  readonly amountInvalidErrorMessage: Locator;
 
   readonly fromAccountLabel: Locator;
   readonly fromAccountSelect: Locator;
@@ -53,11 +57,16 @@ export class BillPayPage {
   readonly submitFormBtn: Locator;
   readonly billPayConfirmationHeading: Locator;
   readonly billPayConfirmationSubtitle: Locator;
+  readonly billPayConfirmationDetails: Locator;
+
+  readonly billPayErrorHeading: Locator;
+  readonly billPayErrorSubtitle: Locator;
+
   readonly EXPECTED_PAGE_URL = new RegExp(getUrlPattern(this.PAGE_NAME));
 
   constructor(page: Page) {
     this.page = page;
-    this.billPayFormHeading = page.locator("#rightPanel > h1");
+    this.billPayFormHeading = page.locator("#rightPanel [id='billpayForm'] > h1");
     this.billPayFormSubtitle = page.locator("#rightPanel p").nth(0);
 
     this.payeeNameLabel = page.getByText("Payee Name:");
@@ -86,22 +95,30 @@ export class BillPayPage {
 
     this.accountNumberLabel = page.getByText("Account #:", { exact: true });
     this.accountNumberInput = page.locator('[name="payee.accountNumber"]');
-    this.accountNumberErrorMessage = page.locator('[id="validationModel-account"]');
+    this.accountNumberRequiredErrorMessage = page.locator('[id="validationModel-account-empty"]');
+    this.accountNumberInvalidErrorMessage = page.locator('[id="validationModel-account-invalid"]');
 
     this.verifyAccountNumberLabel = page.getByText("Verify Account #:");
     this.verifyAccountNumberInput = page.locator('[name="verifyAccount"]');
-    this.verifyAccountNumberErrorMessage = page.locator('[id="validationModel-verifyAccount"]');
+    this.verifyAccountNumberRequiredErrorMessage = page.locator('[id="validationModel-verifyAccount-empty"]');
+    this.verifyAccountNumberInvalidErrorMessage = page.locator('[id="validationModel-verifyAccount-invalid"]');
+    this.verifyAccountNumberMismatchErrorMessage = page.locator('[id="validationModel-verifyAccount-mismatch"]');
 
     this.amountLabel = page.getByText("Amount: $");
     this.amountInput = page.locator('[name="amount"]');
-    this.amountErrorMessage = page.locator('[id="validationModel-amount"]');
+    this.amountRequiredErrorMessage = page.locator('[id="validationModel-amount-empty"]');
+    this.amountInvalidErrorMessage = page.locator('[id="validationModel-amount-invalid"]');
 
     this.fromAccountLabel = page.getByText("From account #:");
     this.fromAccountSelect = page.locator('[name="fromAccountId"]');
 
     this.submitFormBtn = page.getByRole("button", { name: "Send Payment" });
-    this.billPayConfirmationHeading = page.locator("#rightPanel > h1");
-    this.billPayConfirmationSubtitle = page.locator("#rightPanel p").nth(0);
+    this.billPayConfirmationHeading = page.locator("#rightPanel [id='billpayResult'] > h1");
+    this.billPayConfirmationSubtitle = page.locator("#rightPanel [id='billpayResult'] > p").nth(0);
+    this.billPayConfirmationDetails = page.locator("#rightPanel [id='billpayResult'] > p").nth(1);
+
+    this.billPayErrorHeading = page.locator("#rightPanel [id='billpayError'] > h1");
+    this.billPayErrorSubtitle = page.locator("#rightPanel [id='billpayError'] > p").nth(0);
   }
 
   navigate = async (): Promise<void> => {
@@ -121,174 +138,134 @@ export class BillPayPage {
     await this.accountNumberInput.fill(billPayData.accountNumber.toString());
     await this.verifyAccountNumberInput.fill(billPayData.verifyAccountNumber.toString());
     await this.amountInput.fill(billPayData.amount.toString());
-    await this.fromAccountSelect.selectOption({ label: billPayData.fromAccountNumber.toString() });
+    await this.fromAccountSelect.selectOption({ index: 0 });
   };
 
-  submitBillPayForm = async (userData?: BillPayFormEntry): Promise<void> => {
-    Logger.debug(`Submitting bill pay form for payee: ${userData?.payeeName || "N/A"}`);
+  submitBillPayForm = async (billPayData?: BillPayFormEntry): Promise<void> => {
+    Logger.debug(`Submitting bill pay form for payee: ${billPayData?.payeeName || "N/A"}`);
     await this.submitFormBtn.click();
   };
 
   getBillPayFormFields = () => [
-    {
-      label: this.payeeNameLabel,
-      expectedLabel: "Payee Name:",
-      input: this.payeeNameInput,
-      requiredError: this.payeeNameErrorMessage,
-      expectedRequiredError: billPayValidationErrors.required.payeeNameRequired,
-    },
-    {
-      label: this.addressLabel,
-      expectedLabel: "Address:",
-      input: this.addressInput,
-      requiredError: this.addressErrorMessage,
-      expectedRequiredError: billPayValidationErrors.required.addressRequired,
-    },
-    {
-      label: this.cityLabel,
-      expectedLabel: "City:",
-      input: this.cityInput,
-      requiredError: this.cityErrorMessage,
-      expectedRequiredError: billPayValidationErrors.required.cityRequired,
-    },
-    {
-      label: this.stateLabel,
-      expectedLabel: "State:",
-      input: this.stateInput,
-      requiredError: this.stateErrorMessage,
-      expectedRequiredError: billPayValidationErrors.required.stateRequired,
-    },
-    {
-      label: this.zipCodeLabel,
-      expectedLabel: "Zip Code:",
-      input: this.zipCodeInput,
-      requiredError: this.zipCodeErrorMessage,
-      expectedRequiredError: billPayValidationErrors.required.zipCodeRequired,
-    },
-    {
-      label: this.phoneLabel,
-      expectedLabel: "Phone #:",
-      input: this.phoneInput,
-      requiredError: this.phoneErrorMessage,
-      expectedRequiredError: billPayValidationErrors.required.phoneRequired,
-    },
-    {
-      label: this.accountNumberLabel,
-      expectedLabel: "Account #:",
-      input: this.accountNumberInput,
-      requiredError: this.accountNumberErrorMessage,
-      expectedRequiredError: billPayValidationErrors.required.accountNumberRequired,
-    },
-    {
-      label: this.verifyAccountNumberLabel,
-      expectedLabel: "Verify Account #:",
-      input: this.verifyAccountNumberInput,
-      requiredError: this.verifyAccountNumberErrorMessage,
-      expectedRequiredError: billPayValidationErrors.required.verifyAccountNumberRequired,
-    },
-    {
-      label: this.amountLabel,
-      expectedLabel: "Amount: $",
-      input: this.amountInput,
-      requiredError: this.amountErrorMessage,
-      expectedRequiredError: billPayValidationErrors.required.amountRequired,
-    },
-    {
-      label: this.fromAccountLabel,
-      expectedLabel: "From account #",
-      input: this.fromAccountSelect,
-    },
-  ];
-
-  getBillPayFormFields2 = () => [
-    {
-      label: this.payeeNameLabel,
-      expectedLabel: "Payee Name:",
-      input: this.payeeNameInput,
-      errorValidator: this.payeeNameErrorMessage,
-      errors: {
-        expectedRequiredError: billPayValidationErrors.required.payeeNameRequired,
+  {
+    locator: this.payeeNameLabel,
+    expectedLabel: billPayLabels.payeeNameLabel,
+    input: this.payeeNameInput,
+    errors: {
+      required: {
+        errorLocator: this.payeeNameErrorMessage,
+        expectedErrorMessage: billPayValidationErrors.required.payeeNameRequired,
       },
     },
-    {
-      label: this.addressLabel,
-      expectedLabel: "Address:",
-      input: this.addressInput,
-      errorValidator: this.addressErrorMessage,
-      errors: {
-        expectedRequiredError: billPayValidationErrors.required.addressRequired,
+  },
+  {
+    locator: this.addressLabel,
+    expectedLabel: billPayLabels.addressLabel,
+    input: this.addressInput,
+    errors: {
+      required: {
+        errorLocator: this.addressErrorMessage,
+        expectedErrorMessage: billPayValidationErrors.required.addressRequired
       },
     },
-    {
-      label: this.cityLabel,
-      expectedLabel: "City:",
-      input: this.cityInput,
-      errorValidator: this.cityErrorMessage,
-      errors: {
-        expectedRequiredError: billPayValidationErrors.required.cityRequired,
+  },
+  {
+    locator: this.cityLabel,
+    expectedLabel: billPayLabels.cityLabel,
+    input: this.cityInput,
+    errors: {
+      required: {
+        errorLocator: this.cityErrorMessage,
+        expectedErrorMessage: billPayValidationErrors.required.cityRequired,
       },
     },
-    {
-      label: this.stateLabel,
-      expectedLabel: "State:",
-      input: this.stateInput,
-      errorValidator: this.stateErrorMessage,
-      errors: {
-        expectedRequiredError: billPayValidationErrors.required.stateRequired,
+  },
+  {
+    locator: this.stateLabel,
+    expectedLabel: billPayLabels.stateLabel,
+    input: this.stateInput,
+    errors: {
+      required: {
+        errorLocator: this.stateErrorMessage,
+        expectedErrorMessage: billPayValidationErrors.required.stateRequired,
       },
     },
-    {
-      label: this.zipCodeLabel,
-      expectedLabel: "Zip Code:",
-      input: this.zipCodeInput,
-      errorValidator: this.zipCodeErrorMessage,
-      errors: {
-        expectedRequiredError: billPayValidationErrors.required.zipCodeRequired,
+  },
+  {
+    locator: this.zipCodeLabel,
+    expectedLabel: billPayLabels.zipCodeLabel,
+    input: this.zipCodeInput,
+    errors: {
+      required: {
+        errorLocator: this.zipCodeErrorMessage,
+        expectedErrorMessage: billPayValidationErrors.required.zipCodeRequired,
       },
     },
-    {
-      label: this.phoneLabel,
-      expectedLabel: "Phone #:",
-      input: this.phoneInput,
-      errorValidator: this.phoneErrorMessage,
-      errors: {
-        expectedRequiredError: billPayValidationErrors.required.phoneRequired,
+  },
+  {
+    locator: this.phoneLabel,
+    expectedLabel: billPayLabels.phoneLabel,
+    input: this.phoneInput,
+    errors: {
+      required: {
+        errorLocator: this.phoneErrorMessage,
+        expectedErrorMessage: billPayValidationErrors.required.phoneRequired,
+      },
+    }
+  },
+  {
+    locator: this.accountNumberLabel,
+    expectedLabel: billPayLabels.accountNumberLabel,
+    input: this.accountNumberInput,
+    errors: {
+      required: {
+        errorLocator: this.accountNumberRequiredErrorMessage,
+        expectedErrorMessage: billPayValidationErrors.required.accountNumberRequired,
+      },
+      invalid: {
+        errorLocator: this.accountNumberInvalidErrorMessage,
+        expectedErrorMessage: billPayValidationErrors.invalid.accountNumberInvalid
       }
-    },
-    {
-      label: this.accountNumberLabel,
-      expectedLabel: "Account #:",
-      input: this.accountNumberInput,
-      errorValidator: this.accountNumberErrorMessage,
-      errors: {
-        expectedRequiredError: billPayValidationErrors.required.accountNumberRequired,
-        expectedInvalidError: billPayValidationErrors.invalid.accountNumberInvalid,
+    }
+  },
+  {
+    locator: this.verifyAccountNumberLabel,
+    expectedLabel: billPayLabels.verifyAccountNumberLabel,
+    input: this.verifyAccountNumberInput,
+    errors: {
+      required: {
+        errorLocator: this.verifyAccountNumberRequiredErrorMessage,
+        expectedErrorMessage: billPayValidationErrors.required.accountNumberRequired,
+      },
+      invalid: {
+        errorLocator: this.verifyAccountNumberInvalidErrorMessage,
+        expectedErrorMessage: billPayValidationErrors.invalid.accountNumberInvalid
+      },
+      mismatch: {
+        errorLocator: this.verifyAccountNumberMismatchErrorMessage,
+        expectedErrorMessage: billPayValidationErrors.mismatch.verifyAccountNumberMismatch
       }
-    },
-    {
-      label: this.verifyAccountNumberLabel,
-      expectedLabel: "Verify Account #:",
-      input: this.verifyAccountNumberInput,
-      errorValidator: this.verifyAccountNumberErrorMessage,
-      errors: {
-        expectedRequiredError: billPayValidationErrors.required.verifyAccountNumberRequired,
-        expectedInvalidError: billPayValidationErrors.invalid.verifyAccountNumberInvalid,
+    }
+  },
+  {
+    locator: this.amountLabel,
+    expectedLabel: billPayLabels.amountLabel,
+    input: this.amountInput,
+    errors: {
+      required: {
+        errorLocator: this.amountRequiredErrorMessage,
+        expectedErrorMessage: billPayValidationErrors.required.amountRequired,
+      },
+      invalid: {
+        errorLocator: this.amountInvalidErrorMessage,
+        expectedErrorMessage: billPayValidationErrors.invalid.amountInvalid,
       }
-    },
-    {
-      label: this.amountLabel,
-      expectedLabel: "Amount: $",
-      input: this.amountInput,
-      errorValidator: this.amountErrorMessage,
-      errors: {
-        expectedRequiredError: billPayValidationErrors.required.amountRequired,
-        expectedInvalidError: billPayValidationErrors.invalid.amountInvalid,
-      }
-    },
-    {
-      label: this.fromAccountLabel,
-      expectedLabel: "From account #",
-      input: this.fromAccountSelect,
-    },
-  ];
+    }
+  },
+  {
+    locator: this.fromAccountLabel,
+    expectedLabel: billPayLabels.fromAccountLabel,
+    input: this.fromAccountSelect
+  },
+];
 }

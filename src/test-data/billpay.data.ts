@@ -1,4 +1,7 @@
-export const billPay = {
+import type { BillPayFormEntry } from "@@types/billpay";
+import type { TestData } from "@@types/test-data";
+
+export const billPayFormData: TestData<BillPayFormEntry> = {
   valid: [
     {
       payeeName: "Electric Company",
@@ -9,8 +12,7 @@ export const billPay = {
       phone: "5125550123",
       accountNumber: "12345",
       verifyAccountNumber: "12345",
-      amount: "20.00",
-      fromAccount: "12456",
+      amount: 20,
     },
   ],
   invalid: [
@@ -31,12 +33,36 @@ export const billPay = {
       city: "Austin",
       state: "TX",
       zipCode: "78701",
-      phone: "abc132536",
+      phone: "5125550123",
       accountNumber: "12345",
       verifyAccountNumber: "12345",
-      amount: "50.00",
-    }
+      amount: "@amount20",
+    },
+    {
+      payeeName: "Electric Company",
+      address: "123 Main St",
+      city: "Austin",
+      state: "TX",
+      zipCode: "78701",
+      phone: "abc132536",
+      accountNumber: "testwrongaccnum",
+      verifyAccountNumber: "testwrongaccnum",
+      amount: "9999999999999999999999999999999999999999999999",
+    },
   ],
+};
+
+export const billPayLabels = {
+  payeeNameLabel: "Payee Name:",
+  addressLabel: "Address:",
+  cityLabel: "City:",
+  stateLabel: "State:",
+  zipCodeLabel: "Zip Code:",
+  phoneLabel: "Phone #:",
+  accountNumberLabel: "Account #:",
+  verifyAccountNumberLabel: "Verify Account #:",
+  amountLabel: "Amount: $",
+  fromAccountLabel: "From account #:",
 };
 
 export const billPayValidationErrors = {
@@ -56,6 +82,9 @@ export const billPayValidationErrors = {
     verifyAccountNumberInvalid: "Please enter a valid number.",
     amountInvalid: "Please enter a valid amount.",
   },
+  mismatch: {
+    verifyAccountNumberMismatch: "The account numbers do not match.",
+  },
 };
 
 export const billPayForm = {
@@ -65,6 +94,11 @@ export const billPayForm = {
 
 export const billPayConfirmation = {
   header: "Bill Payment Complete",
-  message: "Bill Payment to Electric Company in the amount of $50.00 from account 12345 was successful.",
-  message2: "See Account Activity for more details.",
+  message: (amount: number, fromAcc: string) => `Bill Payment to Electric Company in the amount of $${amount}.00 from account ${fromAcc} was successful.`,
+  details: "See Account Activity for more details.",
+};
+
+export const billPayError = {
+  header: "Error!",
+  message: "An internal error has occurred and has been logged.",
 };
