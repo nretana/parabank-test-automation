@@ -22,7 +22,7 @@ test("TC-AUTH-SIGNIN-001: Pre-login sidebar displays the expected labels, inputs
   });
 });
 
-test("TC-AUTH-SIGNIN-002: Valid credentials sign in and display accounts overview page and the customer greeting", { tag: ["@smoke", "@regression"] }, async ({ page }) => {
+test("TC-AUTH-SIGNIN-002: Successful sign in and display accounts overview page and the customer greeting", { tag: ["@smoke", "@regression"] }, async ({ page }) => {
   const newUser = userRegistration.getValidUser() as UserRegistration;
   const signInSideBar = new SignInSideBarComponent(page);
   const signedInSideBar = new SignedInSideBarComponent(page);
