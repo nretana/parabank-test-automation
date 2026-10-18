@@ -60,7 +60,8 @@ test("TC-HOME-003: Validate latest news links in home page", { tag: ["@regressio
   });
 
   await test.step("Validating event links in home page", async () => {
-    await expect(newsMenuCom.dateTitle).toHaveText(new Date().toLocaleDateString("en-US", { timeZone: "UTC" }));
+    const currentDate = new Date().toLocaleDateString("en-US", { timeZone: "UTC" });
+    await expect(newsMenuCom.dateTitle).toHaveText(currentDate);
     await verifyLinks(page, newsMenuCom.eventLinks);
   });
 });

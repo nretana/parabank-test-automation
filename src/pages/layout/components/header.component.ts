@@ -2,18 +2,21 @@ import { Locator, Page } from "@playwright/test";
 import { HyperLink } from "@@types/hyperlink";
 import { BASE_URL } from "@constants/base.constant";
 import { getUrlPattern } from "@utils/get-url-pattern";
+import { HOME_PAGE } from '@constants/route.constant';
 
 export class HeaderComponent {
   readonly page: Page;
   readonly logoCaption: Locator;
   readonly logoLinks: HyperLink[];
+  readonly leftMenuHeading : Locator;
   readonly leftMenuLinks: HyperLink[];
   readonly rightMenuLinks: HyperLink[];
-  private readonly PAGE_NAME = "index";
+  private readonly PAGE_NAME = HOME_PAGE;
   readonly EXPECTED_PAGE_URL = new RegExp(getUrlPattern(this.PAGE_NAME));
   constructor(page: Page) {
     this.page = page;
     this.logoCaption = this.page.getByText("Experience the difference");
+    this.leftMenuHeading = this.page.locator("#headerPanel ul.leftmenu > li").nth(0);
     this.logoLinks = [
       {
         locator: this.page.locator("#topPanel > a[href='admin.htm']"),
@@ -42,7 +45,6 @@ export class HeaderComponent {
     ];
 
     this.leftMenuLinks = [
-      //{ locator: this.page.getByText('Solutions'), expectedLabel: "Solutions", expectedHref: "https://www.parasoft.com/solutions/" },
       {
         locator: this.page.locator("#headerPanel").getByRole("link", { name: "About Us" }),
         expectedLabel: "About Us",

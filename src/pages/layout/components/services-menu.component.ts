@@ -3,6 +3,7 @@ import { getUrlPattern } from "@utils/get-url-pattern";
 import type { HyperLink } from "@@types/hyperlink";
 
 export class ServicesMenuComponent {
+  private readonly page: Page;
   private readonly servicesMenu: Locator;
   private readonly onlineServicesMenu: Locator;
   readonly atmTitle: Locator;
@@ -15,8 +16,9 @@ export class ServicesMenuComponent {
   private readonly EXPECTED_ONLINE_SERVICE_URL = new RegExp(String.raw`services/bank\?_wadl\&_type=xml$`);
 
   constructor(page: Page) {
-    this.servicesMenu = page.locator("#rightPanel ul.services");
-    this.onlineServicesMenu = page.locator("#rightPanel ul.servicestwo");
+    this.page = page;
+    this.servicesMenu = this.page.locator("#rightPanel ul.services");
+    this.onlineServicesMenu = this.page.locator("#rightPanel ul.servicestwo");
     this.atmTitle = this.servicesMenu.locator("> li").nth(0);
     this.onlineServicesTitle = this.onlineServicesMenu.locator("> li").nth(0);
     this.serviceLinks = [
@@ -42,7 +44,7 @@ export class ServicesMenuComponent {
         expectedVisible: true,
       },
       {
-        locator: page.locator("#rightPanel p.more > a").nth(0),
+        locator: this.page.locator("#rightPanel p.more > a").nth(0),
         expectedLabel: "Read More",
         expectedHref: "services.htm",
         expectedRedirectUrl: new RegExp(getUrlPattern("services")),

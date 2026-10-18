@@ -3,6 +3,7 @@ import { getUrlPattern } from "@utils/get-url-pattern";
 import type { HyperLink } from "@@types/hyperlink";
 
 export class NewsMenuComponent {
+  private readonly page: Page;
   private readonly eventsMenu: Locator;
   readonly latestNewsHeading: Locator;
   readonly dateTitle: Locator;
@@ -10,10 +11,11 @@ export class NewsMenuComponent {
   readonly newsHeading: Locator;
 
   constructor(page: Page) {
-    this.latestNewsHeading = page.locator("#rightPanel ");
-    this.eventsMenu = page.locator("#rightPanel ul.events");
+    this.page = page;
+    this.latestNewsHeading = this.page.locator("#rightPanel ");
+    this.eventsMenu = this.page.locator("#rightPanel ul.events");
     this.dateTitle = this.eventsMenu.locator("li").nth(0);
-    this.newsHeading = page.locator("#rightPanel").getByRole("heading", { name: "Parabank News" });
+    this.newsHeading = this.page.locator("#rightPanel").getByRole("heading", { name: "Parabank News" });
     this.eventLinks = [
       {
         locator: this.eventsMenu.locator("a").nth(0),

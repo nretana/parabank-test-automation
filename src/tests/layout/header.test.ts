@@ -49,6 +49,7 @@ test.describe("Header Component", { tag: ["@regression"] }, () => {
 
   test("TC-HEADER-002: Left navigation menu renders all links", async ({ page, header }) => {
     await test.step("verifying links from left navigation menu", async () => {
+      await expect(header.leftMenuHeading).toHaveText("Solutions");
       await verifyHeaderLinks(page, header.leftMenuLinks);
     });
   });

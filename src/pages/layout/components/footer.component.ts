@@ -2,13 +2,14 @@ import { Page, Locator } from "@playwright/test";
 import { getUrlPattern } from "@utils/get-url-pattern";
 import { HyperLink } from "@@types/hyperlink";
 import { BASE_URL } from "@constants/base.constant";
+import { HOME_PAGE } from '@constants/route.constant';
 
 export class FooterComponent {
     readonly page: Page;
     readonly copyright: Locator;
     readonly visitLabel: Locator;
     readonly footerLinks: HyperLink[];
-    private readonly PAGE_NAME = "index"
+    private readonly PAGE_NAME = HOME_PAGE;
     readonly EXPECTED_PAGE_URL = new RegExp(getUrlPattern(this.PAGE_NAME));
     constructor(page: Page) {
         this.page = page;
