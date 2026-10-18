@@ -113,14 +113,23 @@ An end-to-end (E2E) automated testing framework built for the [Parabank Online B
 - [x] Custom fixtures implementation (`auth.fixture.ts`)
 - [x] User authentication & registration flows
 - [ ] Account management tests (Open Account, Balances)
+- [ ] Financial transactions (Fund Transfer, Bill Pay)
 - [x] Cross-browser test suite validation (Chromium, Firefox, WebKit)
 - [x] GitHub Actions CI/CD pipeline integration
 
-### 🔮 Planned Features
-- [ ] Financial transactions (Fund Transfer, Bill Pay)
+<!-- ### 🔮 Planned Features -->
+
 
 ---
 
 <!-- ## 📈 CI/CD Pipeline
 
 This repository includes **GitHub Actions** workflows (`.github/workflows/regression.yml, .github/workflows/smoke.yml`) that triggers on every `push` and `pull_request` to `main`. It automatically executes the test suite across multiple browser engines and uploads Playwright HTML reports as pipeline artifacts. -->
+
+## 🐛 Bug Tracking & Quality Insights
+
+Real defects uncovered during test suite runs are logged and managed directly in this repository's issue tracker.
+You can explore detailed bug reports with reproduction steps, expected vs. actual behaviors, via the link below:
+
+* **[View Active Bug Reports](https://github.com/nretana/parabank-test-automation/issues)**
+<!-- * **[View Resolved Issues](https://github.com/nretana/parabank-test-automation/issues?q=is%3Aissue+is%3Aclosed+label%3Abug)** -->
